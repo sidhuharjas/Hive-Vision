@@ -120,9 +120,9 @@ hive-vision/
 ## Demo clips
 
 These short 1920x1080 clips show the two deployment paths on match footage.
-They were sourced from the ReVela kickoff video and are examples for visual
-inspection, not a replacement for field testing or the precision/recall
-measurements in the CV report.
+They were sourced from the [ReVela kickoff video](https://www.youtube.com/watch?v=gO98TkgY0kI)
+and are examples for visual inspection, not a replacement for field testing
+or the precision/recall measurements in the CV report.
 
 | Clip | Track |
 |------|-------|
@@ -149,9 +149,10 @@ for the full-resolution clips with playback controls.
 
 ### Image samples
 
-These samples use the same ReVela kickoff screenshot as input. YOLO samples
-show the effect of two confidence thresholds; OpenCV samples show the normal
-best-candidate output and the full set of gated candidates.
+These samples use a screenshot from the same [ReVela kickoff video](https://www.youtube.com/watch?v=gO98TkgY0kI)
+as input. YOLO samples show the effect of two confidence thresholds; OpenCV
+samples show the normal best-candidate output and the full set of gated
+candidates.
 
 | Model | Sample 1 | Sample 2 |
 |-------|----------|----------|
