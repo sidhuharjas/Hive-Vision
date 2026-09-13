@@ -63,6 +63,14 @@ Python 3.10+ is required only for the optional PC viewers, evaluation, and
 tuning tools. The Limelight deployment uses the shipped ONNX file; the
 Control Hub deployment uses the Java file and does not need Python.
 
+### Licensing
+
+Original Hive Vision code, documentation, and configuration are released
+under the MIT License. The YOLO weights and Ultralytics-dependent training or
+inference material are distributed subject to Ultralytics' AGPL-3.0 licensing
+terms; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Check those terms
+before incorporating the YOLO artifacts into a closed-source product.
+
 ## Quick start
 
 ### Limelight track (ONNX / YOLO)
@@ -142,6 +150,9 @@ These short 1920x1080 clips show the two deployment paths on real footage.
 They were sourced from the [kickoff video](https://www.youtube.com/watch?v=gO98TkgY0kI)
 and are examples for visual inspection, not a replacement for field testing
 or the precision/recall measurements in the CV report.
+Confirm that you have permission to redistribute any source footage before
+publishing these demo files outside this repository. Replace them with your
+own footage if permission is unclear.
 
 | Clip | Track |
 |------|-------|

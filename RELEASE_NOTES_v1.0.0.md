@@ -26,6 +26,12 @@ The OpenCV detector produces candidate signals rather than guaranteed ball detec
 
 The Limelight and Control Hub paths should be tested on the actual robot hardware before competition.
 
+## Licensing
+
+Original Hive Vision code and documentation are MIT-licensed. The YOLO
+weights and Ultralytics-dependent material are subject to Ultralytics' AGPL-3.0
+licensing terms; see `THIRD_PARTY_NOTICES.md`.
+
 ## Demo source
 
 The included example footage and sample screenshot were derived from this kickoff video:
