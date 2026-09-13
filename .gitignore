@@ -1,0 +1,20 @@
+# Python bytecode / caches
+__pycache__/
+*.pyc
+*.pyo
+
+# Detector outputs & media
+annotated.mp4
+*.mp4
+!demo/*.mp4
+out_*.jpg
+
+# Model/training artifacts you regenerate
+*.pt
+!yolo/weights/best.pt
+runs/
+dataset/
+
+# OS junk
+Thumbs.db
+.DS_Store

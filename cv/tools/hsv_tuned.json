@@ -1,0 +1,14 @@
+{
+  "yellow": {
+    "source": "learned from YOLO-confirmed ball pixels on the real match video (fit_hsv_from_yolo.py)",
+    "segments": [[[9, 90, 45], [33, 255, 238]]]
+  },
+  "red": {
+    "source": "learned from YOLO-confirmed ball pixels on the real match video (fit_hsv_from_yolo.py)",
+    "segments": [[[0, 81, 45], [15, 255, 232]], [[170, 81, 45], [180, 255, 232]]]
+  },
+  "blue": {
+    "source": "learned from YOLO-confirmed ball pixels on the real match video (fit_hsv_from_yolo.py)",
+    "segments": [[[102, 80, 45], [128, 255, 247]]]
+  }
+}
