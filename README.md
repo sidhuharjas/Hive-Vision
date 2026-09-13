@@ -181,8 +181,9 @@ candidates.
 ## Community
 
 Join the [Hive Vision Discord server](https://discord.gg/m2yPTprccv) to share
-robot tests, training data, detector results, and setup questions.
-Project contact on Discord: `harjas_sidhu`.
+robot tests, training data, detector results, and setup questions. You can also
+[open an issue on GitHub](https://github.com/sidhuharjas/Hive-Vison/issues)
+for bugs, suggestions, or dataset contributions.
 
 ## Updates and training data
 
@@ -195,8 +196,33 @@ demo samples.
 To contribute training data, join the Discord server and share a link in the
 training-data discussion. Include the source, camera resolution, frame rate,
 lighting conditions, and permission to use the footage. Useful submissions
-include clear ball views, tiny or blurred balls, partially hidden balls,
-robot-panel false positives, and empty-field images.
+include:
+
+- Real robot footage with no balls in view, so the model learns backgrounds,
+  robot parts, field markings, and empty-field negatives.
+- A 360-degree view of the field from the camera position, when possible.
+- Many ball views at different distances, angles, lighting conditions, and
+  levels of motion blur.
+- Tiny, partially hidden, overlapping, or edge-of-frame balls.
+- Robot panels, tape, shadows, reflections, and other false-positive examples.
+
+## Training-data workflow
+
+1. Share the original video or image link in Discord or a GitHub issue.
+2. Include the camera, resolution, frame rate, lighting, field location, and
+  permission to use the footage.
+3. Separate useful empty-field footage from clips containing visible balls.
+4. Label visible balls as `yellow`, `red`, or `blue`; do not label objects that
+  only resemble balls.
+5. Keep a note describing difficult cases and what the current model missed.
+6. After review, accepted data can be included in a future every-other-week
+  dataset or model update.
+
+Contributors may list approved work in a portfolio as a computer-vision or
+robotics contribution to Hive Vision. Credit should accurately describe what
+was contributed, such as field data collection, labeling, hard-negative mining,
+evaluation, or detector testing. Do not claim authorship of the entire project
+unless that reflects your actual contribution.
 
 ## License
 
