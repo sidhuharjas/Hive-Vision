@@ -134,18 +134,18 @@ measurements in the CV report.
 
 ### Automatic video previews
 
-The previews are muted so browsers can autoplay them. Use the controls to
-pause, expand, or enable sound.
+These animated previews loop automatically in GitHub. Open the MP4 links above
+for the full-resolution clips with playback controls.
 
-<video src="demo/yolo_example_1.mp4" autoplay muted loop playsinline controls width="640"></video>
+![YOLO example 1](demo/previews/yolo_example_1.gif)
 
-<video src="demo/yolo_example_2.mp4" autoplay muted loop playsinline controls width="640"></video>
+![YOLO example 2](demo/previews/yolo_example_2.gif)
 
-<video src="demo/yolo_example_3.mp4" autoplay muted loop playsinline controls width="640"></video>
+![YOLO example 3](demo/previews/yolo_example_3.gif)
 
-<video src="demo/control_hub_cv_example_1.mp4" autoplay muted loop playsinline controls width="640"></video>
+![Control Hub OpenCV example 1](demo/previews/control_hub_cv_example_1.gif)
 
-<video src="demo/control_hub_cv_example_2.mp4" autoplay muted loop playsinline controls width="640"></video>
+![Control Hub OpenCV example 2](demo/previews/control_hub_cv_example_2.gif)
 
 ### Image samples
 

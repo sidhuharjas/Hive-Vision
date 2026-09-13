@@ -7,6 +7,7 @@ __pycache__/
 annotated.mp4
 *.mp4
 !demo/*.mp4
+!demo/previews/*.gif
 out_*.jpg
 
 # Model/training artifacts you regenerate
