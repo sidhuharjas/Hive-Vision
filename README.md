@@ -139,7 +139,7 @@ hive-vision/
 ## Demo clips
 
 These short 1920x1080 clips show the two deployment paths on real footage.
-They were sourced from the [ReVela kickoff video](https://www.youtube.com/watch?v=gO98TkgY0kI)
+They were sourced from the [kickoff video](https://www.youtube.com/watch?v=gO98TkgY0kI)
 and are examples for visual inspection, not a replacement for field testing
 or the precision/recall measurements in the CV report.
 
@@ -168,7 +168,7 @@ for the full-resolution clips with playback controls.
 
 ### Image samples
 
-These samples use a screenshot from the same [ReVela kickoff video](https://www.youtube.com/watch?v=gO98TkgY0kI)
+These samples use a screenshot from the same [kickoff video](https://www.youtube.com/watch?v=gO98TkgY0kI)
 as input. YOLO samples show the effect of two confidence thresholds; OpenCV
 samples show the normal best-candidate output and the full set of gated
 candidates.
