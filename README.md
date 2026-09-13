@@ -218,11 +218,13 @@ include:
 6. After review, accepted data can be included in a future every-other-week
   dataset or model update.
 
-Contributors may list approved work in a portfolio as a computer-vision or
-robotics contribution to Hive Vision. Credit should accurately describe what
-was contributed, such as field data collection, labeling, hard-negative mining,
-evaluation, or detector testing. Do not claim authorship of the entire project
-unless that reflects your actual contribution.
+Contributors whose training data or testing work is accepted may request a
+certificate recognizing their contribution to Hive Vision. The certificate
+can describe work such as real-robot data collection, labeling, hard-negative
+mining, evaluation, or detector testing, and may be included in a portfolio or
+resume. Requests can be made through a GitHub issue or the Discord server.
+Recognition will describe the specific contribution and will not imply
+authorship of the entire project.
 
 ## License
 
