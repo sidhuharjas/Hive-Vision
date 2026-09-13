@@ -132,6 +132,21 @@ measurements in the CV report.
 | [`demo/control_hub_cv_example_1.mp4`](demo/control_hub_cv_example_1.mp4) | Control Hub/OpenCV example |
 | [`demo/control_hub_cv_example_2.mp4`](demo/control_hub_cv_example_2.mp4) | Control Hub/OpenCV example |
 
+### Automatic video previews
+
+The previews are muted so browsers can autoplay them. Use the controls to
+pause, expand, or enable sound.
+
+<video src="demo/yolo_example_1.mp4" autoplay muted loop playsinline controls width="640"></video>
+
+<video src="demo/yolo_example_2.mp4" autoplay muted loop playsinline controls width="640"></video>
+
+<video src="demo/yolo_example_3.mp4" autoplay muted loop playsinline controls width="640"></video>
+
+<video src="demo/control_hub_cv_example_1.mp4" autoplay muted loop playsinline controls width="640"></video>
+
+<video src="demo/control_hub_cv_example_2.mp4" autoplay muted loop playsinline controls width="640"></video>
+
 ### Image samples
 
 These samples use the same ReVela kickoff screenshot as input. YOLO samples
