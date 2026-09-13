@@ -34,6 +34,14 @@ the robot acts on one.
   footage: yellow 69%, red 80%, blue 82% (full report in
   [`cv/docs/cv_detector_report.md`](cv/docs/cv_detector_report.md)).
 
+## Model details
+
+The Limelight YOLOv8n model was trained on approximately 7,000 labeled images
+combining synthetic renders and real footage. The dataset includes yellow,
+red, and blue balls, plus difficult examples involving blur, occlusion,
+distance, field lighting, and robot-colored distractions. Evaluation results
+were measured on separate footage from the training images.
+
 ## PC tools
 
 ```bash
@@ -119,7 +127,7 @@ hive-vision/
 
 ## Demo clips
 
-These short 1920x1080 clips show the two deployment paths on match footage.
+These short 1920x1080 clips show the two deployment paths on real footage.
 They were sourced from the [ReVela kickoff video](https://www.youtube.com/watch?v=gO98TkgY0kI)
 and are examples for visual inspection, not a replacement for field testing
 or the precision/recall measurements in the CV report.
@@ -168,7 +176,7 @@ Project contact on Discord: `harjas_sidhu`.
 ## Updates and training data
 
 Hive Vision will be updated throughout the season, with a planned release or
-model update every other week as new match footage, field conditions, camera
+model update every other week as new real footage, field conditions, camera
 angles, and difficult examples become available. Updates may include refreshed
 YOLO weights, improved OpenCV HSV settings, new evaluation results, and new
 demo samples.
