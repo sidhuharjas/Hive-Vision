@@ -18,6 +18,17 @@ Control Hub without a model or coprocessor. The Limelight model detects
 returns color candidates and must be confirmed across several frames before
 the robot acts on one.
 
+## Deployment tradeoffs
+
+| Option | Strengths | Tradeoffs |
+|--------|-----------|-----------|
+| Limelight YOLO | More adaptable to shape, distance, blur, and changing backgrounds; generally the stronger accuracy option | Requires a Limelight, model upload, and FTC-side result integration |
+| Control Hub OpenCV | Lightweight, low-cost, and fast to run locally with no model or coprocessor | Less adaptable to lighting, white balance, camera resolution, and colors that resemble the balls; requires field retuning |
+
+Use OpenCV when simplicity and low hardware cost matter most. Use Limelight
+YOLO when the robot can support it and detection reliability matters more than
+the extra hardware and setup.
+
 ## Features
 
 - **Two hardware paths, one tuning** — the HSV ranges in the Control Hub
