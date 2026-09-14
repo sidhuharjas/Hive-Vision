@@ -37,7 +37,9 @@ aspect outside 0.55–1.8, area > 3.1% of frame) · `s` save current frame.
 The TFLite test runner writes an annotated MP4 with class labels, confidence,
 and NMS-filtered boxes. The included test clip is
 [`demo/tflite_test_v7f.mp4`](../demo/tflite_test_v7f.mp4). It is a model
-inspection tool, not a substitute for testing on Limelight 3A hardware.
+inspection tool, not a substitute for testing on Limelight 3A hardware. Its
+sphere filter removes oversized or non-ball-shaped boxes by default; add
+`--no-sphere` to inspect raw model output.
 
 Verify the ONNX itself:
 

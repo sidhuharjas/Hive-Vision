@@ -11,6 +11,16 @@ LABELS = ("yellow_pollen", "red_nectar", "blue_nectar")
 COLORS = ((0, 255, 255), (0, 0, 255), (255, 0, 0))
 
 
+def ball_like(x1, y1, x2, y2, frame_width, frame_height):
+    box_width = float(x2 - x1)
+    box_height = float(y2 - y1)
+    if box_width <= 0 or box_height <= 0:
+        return False
+    aspect = box_width / box_height
+    area_fraction = (box_width * box_height) / (frame_width * frame_height)
+    return 0.55 <= aspect <= 1.8 and area_fraction <= 0.031
+
+
 def letterbox(frame, size):
     height, width = frame.shape[:2]
     scale = min(size / width, size / height)
@@ -23,7 +33,7 @@ def letterbox(frame, size):
     return canvas, scale, pad_x, pad_y
 
 
-def detections(interpreter, frame, input_detail, output_detail, confidence):
+def detections(interpreter, frame, input_detail, output_detail, confidence, sphere_filter):
     size = int(input_detail["shape"][1])
     image, scale, pad_x, pad_y = letterbox(frame, size)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB).astype(np.float32) / 255.0
@@ -68,6 +78,10 @@ def detections(interpreter, frame, input_detail, output_detail, confidence):
         kept = cv2.dnn.NMSBoxes(nms_boxes, scores, confidence, 0.45)
         for kept_index in np.asarray(kept).reshape(-1):
             boxes.append(class_candidates[int(kept_index)])
+    if sphere_filter:
+        frame_height, frame_width = frame.shape[:2]
+        boxes = [box for box in boxes if ball_like(box[2], box[3], box[4], box[5],
+                                                    frame_width, frame_height)]
     return boxes
 
 
@@ -78,6 +92,8 @@ def main():
     parser.add_argument("--weights", default="yolo/weights/best_limelight3a_float32.tflite")
     parser.add_argument("--confidence", type=float, default=0.25)
     parser.add_argument("--max-frames", type=int, default=0)
+    parser.add_argument("--no-sphere", action="store_true",
+                        help="keep oversized or non-ball-shaped model boxes")
     args = parser.parse_args()
 
     interpreter = tf.lite.Interpreter(model_path=args.weights)
@@ -98,7 +114,8 @@ def main():
         ok, frame = capture.read()
         if not ok or (args.max_frames and frame_number >= args.max_frames):
             break
-        found = detections(interpreter, frame, input_detail, output_detail, args.confidence)
+        found = detections(interpreter, frame, input_detail, output_detail,
+                   args.confidence, not args.no_sphere)
         for class_id, score, x1, y1, x2, y2 in found:
             x1 = max(0, min(width - 1, round(x1)))
             y1 = max(0, min(height - 1, round(y1)))
