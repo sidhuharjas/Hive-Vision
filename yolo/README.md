@@ -9,6 +9,8 @@ Jetson, laptop):
 |------|------------|--------|
 | `weights/best.onnx` | exported ONNX, 960×960 input, opset 12, ~12 MB | Limelight model runner / ONNX Runtime |
 | `weights/best.pt` | Ultralytics source checkpoint, ~6 MB | re-training, re-exporting, PC use |
+| `weights/best_limelight3a_full_integer_quant.tflite` | full-INT8 TFLite export, 960×960 input, ~3 MB | Limelight 3A testing |
+| `weights/labels.txt` | `yellow_pollen`, `red_nectar`, `blue_nectar` | Limelight 3A labels |
 
 ## Viewer (PC / dev)
 
@@ -42,6 +44,9 @@ python -m ultralytics.export model=weights/best.pt format=onnx imgsz=960 opset=1
   (e.g. `640`) lose the tiny far-corner balls — acceptable on constrained
   coprocessors, but measure with this track's own metrics first.
 - Re-upload `best.onnx` to the Limelight after any re-tune.
+- Limelight 3A users should upload `best_limelight3a_full_integer_quant.tflite`
+  with `labels.txt`; this export was generated from the shipped ONNX model
+  using representative calibration images.
 - The two tracks stay in sync through `cv/tools/fit_hsv_from_yolo.py`, which
   mines the Control Hub HSV ranges straight from this model's detections.
 

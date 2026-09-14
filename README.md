@@ -9,6 +9,7 @@ is found and tracked with two deployment options:
 | Track | Where it runs | Cost | Artifacts |
 |-------|---------------|------|-----------|
 | **Limelight (ONNX)** | on the Limelight connected to the robot | small YOLOv8n model | [`yolo/weights/best.onnx`](yolo/README.md) (+ `.pt` source) |
+| **Limelight 3A (TFLite)** | on Limelight 3A | full-INT8 TFLite model | [`yolo/weights/best_limelight3a_full_integer_quant.tflite`](yolo/README.md) + [`labels.txt`](yolo/weights/labels.txt) |
 | **Control Hub (OpenCV)** | on the robot Control Hub itself | none — pure OpenCV, no model | [`TeamCode/BallDetectorPipeline.java`](cv/README.md) |
 
 These are two alternative robot deployments. Use the Limelight track when the
@@ -96,9 +97,11 @@ python cv/tools/realtime_cv.py --source path/to/match.mp4
 python cv/tools/eval_cv_vs_yolo.py --config cv/tools/hsv_tuned.json --source path/to/match.mp4
 ```
 
-For the robot, upload `yolo/weights/best.onnx` to the Limelight model runner
-and read its three class detections through the Limelight API used by your FTC
-integration. For the Control Hub path, copy
+For newer Limelight model runners, upload `yolo/weights/best.onnx`. For
+Limelight 3A, upload `yolo/weights/best_limelight3a_full_integer_quant.tflite`
+and use [`yolo/weights/labels.txt`](yolo/weights/labels.txt) with class order
+`yellow_pollen`, `red_nectar`, `blue_nectar`. Read detections through the
+Limelight API used by your FTC integration. For the Control Hub path, copy
 `cv/TeamCode/BallDetectorPipeline.java` into `TeamCode/`, register it with a
 `VisionPortal`, and read `bestOf(BallColor)` — see [cv/README.md](cv/README.md).
 
@@ -134,6 +137,8 @@ hive-vision/
   yolo/                       Limelight track
     weights/best.pt           YOLOv8n source checkpoint (6 MB)
     weights/best.onnx         exported ONNX for Limelight (12 MB)
+    weights/best_limelight3a_full_integer_quant.tflite  full-INT8 Limelight 3A model (3 MB)
+    weights/labels.txt        class labels: pollen/nectar order
     scripts/                  live viewer + annotated-video exporter
   cv/                         Control Hub track
     TeamCode/                 VisionPortal processor (drop-in for the FTC SDK)
