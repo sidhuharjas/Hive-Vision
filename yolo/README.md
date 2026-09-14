@@ -9,7 +9,7 @@ Jetson, laptop):
 |------|------------|--------|
 | `weights/best.onnx` | exported ONNX, 960×960 input, opset 12, ~12 MB | Limelight model runner / ONNX Runtime |
 | `weights/best.pt` | Ultralytics source checkpoint, ~6 MB | re-training, re-exporting, PC use |
-| `weights/best_limelight3a_full_integer_quant.tflite` | full-INT8 TFLite export, 960×960 input, ~3 MB | Limelight 3A testing |
+| `weights/best_limelight3a_float32.tflite` | validated float32 TFLite export, 960×960 input, ~12 MB | Limelight 3A testing |
 | `weights/labels.txt` | `yellow_pollen`, `red_nectar`, `blue_nectar` | Limelight 3A labels |
 
 ## Viewer (PC / dev)
@@ -23,10 +23,21 @@ python scripts/detect_video_realtime.py --source path/to/video.mp4
 
 # batch-export an annotated MP4
 python scripts/export_annotated.py --source path/to/video.mp4 --out annotated.mp4
+
+# test the Limelight 3A TFLite export over a video
+python yolo/scripts/detect_video_tflite.py \
+  --source path/to/video.mp4 \
+  --output demo/tflite_test.mp4 \
+  --confidence 0.35
 ```
 
 Keys: `q` quit · `p` pause · `f` toggle sphere filter (drops non-ball boxes:
 aspect outside 0.55–1.8, area > 3.1% of frame) · `s` save current frame.
+
+The TFLite test runner writes an annotated MP4 with class labels, confidence,
+and NMS-filtered boxes. The included test clip is
+[`demo/tflite_test_v7f.mp4`](../demo/tflite_test_v7f.mp4). It is a model
+inspection tool, not a substitute for testing on Limelight 3A hardware.
 
 Verify the ONNX itself:
 
@@ -44,9 +55,9 @@ python -m ultralytics.export model=weights/best.pt format=onnx imgsz=960 opset=1
   (e.g. `640`) lose the tiny far-corner balls — acceptable on constrained
   coprocessors, but measure with this track's own metrics first.
 - Re-upload `best.onnx` to the Limelight after any re-tune.
-- Limelight 3A users should upload `best_limelight3a_full_integer_quant.tflite`
-  with `labels.txt`; this export was generated from the shipped ONNX model
-  using representative calibration images.
+- Limelight 3A users should upload `best_limelight3a_float32.tflite` with
+  `labels.txt`; this export was generated from the shipped ONNX model and
+  verified on the included TFLite video test runner.
 - The two tracks stay in sync through `cv/tools/fit_hsv_from_yolo.py`, which
   mines the Control Hub HSV ranges straight from this model's detections.
 

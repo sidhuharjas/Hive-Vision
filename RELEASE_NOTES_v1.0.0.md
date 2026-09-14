@@ -8,7 +8,7 @@ Hive Vision is an FTC ball-detection toolkit with two deployment options:
 ## Included
 
 - `yolo/weights/best.onnx` for Limelight
-- `yolo/weights/best_limelight3a_full_integer_quant.tflite` for Limelight 3A
+- `yolo/weights/best_limelight3a_float32.tflite` for Limelight 3A
 - `yolo/weights/labels.txt` with Pollen/Nectar class names
 - `yolo/weights/best.pt` for PC inference and future export or tuning
 - Control Hub `VisionProcessor` implementation
