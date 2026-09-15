@@ -229,6 +229,8 @@ for the full-resolution clips with playback controls.
 
 ![Control Hub OpenCV example 2](demo/previews/control_hub_cv_example_2.gif)
 
+![CIELAB example](demo/previews/cielab_demo.gif)
+
 ### Image samples
 
 These samples use a screenshot from the same [kickoff video](https://www.youtube.com/watch?v=gO98TkgY0kI)
