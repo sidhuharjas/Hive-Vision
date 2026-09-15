@@ -11,12 +11,21 @@ Jetson, laptop):
 | `weights/best.pt` | Ultralytics source checkpoint, ~6 MB | re-training, re-exporting, PC use |
 | `weights/best_limelight3a_float32.tflite` | validated float32 TFLite export, 960×960 input, ~12 MB | Limelight 3A testing |
 | `weights/best_limelight3a_int8.tflite` | **int8-weight dynamic-range export** (int8 weights, float activations), float32 in/out, 3.4 MB | Limelight 3A (size/speed-optimized) |
+| `weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite` | **SDD-MobileNetV2 retrain from the Limelight online trainer** — the model the 3A actually runs. 8-bit uint8 input 300×300, 4 float32 `TFLite_Detection_PostProcess` outputs, 5.0 MB | Limelight 3A (neural detector) |
 | `weights/labels.txt` | `yellow_pollen`, `red_nectar`, `blue_nectar` | Limelight 3A labels |
 
-All three artifacts emit the **raw YOLO tensor** `output0` (1×7×18900) — rows
+All ONNX artifacts emit the **raw YOLO tensor** `output0` (1×7×18900) — rows
 are [cx, cy, w, h, yellow, red, blue] in the model's 960×960 grid, five
 pre-NMS. Decode + NMS must run on the device or in the FTC pipeline; the model
 itself does not post-process.
+
+The `ssd_mobilenetv2_300x300` model is different by design: it is the
+SSD `TFLite_Detection_PostProcess` contract the 3A requires (full-INT8 uint8
+input, float32 outputs: num detections, scores `[1,10]`, class ids `[1,10]`
+0=yellow 1=red 2=blue, boxes `[1,10,4]` normalized ymin,xmin,ymax,xmax). It
+was trained on the same synthetic V7f ball corpus and cross-checked against
+the locally trained equivalent (identical detections on all test frames). This
+is the artifact to upload to the 3A's Neural Detector.
 
 ## Viewer (PC / dev)
 
