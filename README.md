@@ -138,10 +138,12 @@ Limelight API used by your FTC integration. For the Control Hub paths, copy
 ## Publishing the model for Limelight
 
 `yolo/weights/best.onnx` ships pre-exported for the Limelight model runner
-(YOLOv8n, input 960×960, opset 12, ~12 MB). Upload this file in the Limelight
-web interface, select the model runner, and verify the input size and class
-names before connecting the FTC-side result reader. To re-export with
-different settings:
+(YOLOv8n, input 960×960, opset 12, ~12 MB). Its output is the **raw YOLO
+tensor** `output0` (1×7×18900) — anchor-row cx/cy/w/h + three class scores,
+not decoded detections; do the decode + NMS on the device or in your FTC
+pipeline. Upload this file in the Limelight web interface, select the model
+runner, and verify the input size and class names before connecting the
+FTC-side result reader. To re-export with different settings:
 
 ```bash
 python -m ultralytics.export model=yolo/weights/best.pt format=onnx imgsz=960 opset=12
@@ -183,7 +185,7 @@ hive-vision/
   shipping/                   ready-to-ship handbook (artifacts, comparison, checklist)
   demo/                       short annotated example clips
   logo.png                    project logo
-  LICENSE                     MIT — Copyright (c) 2026 Harjas Sidhu
+  LICENSE                     MIT (code) — see THIRD_PARTY_NOTICES.md for yolo/ (AGPL-3.0)
 ```
 
 ## Shipping
@@ -289,4 +291,6 @@ authorship of the entire project.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+Original Hive Vision code, documentation, and configuration are MIT — see
+[LICENSE](LICENSE). YOLO model artifacts and Ultralytics-dependent material
+are AGPL-3.0 — see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

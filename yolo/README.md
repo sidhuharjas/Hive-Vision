@@ -10,7 +10,13 @@ Jetson, laptop):
 | `weights/best.onnx` | exported ONNX, 960×960 input, opset 12, ~12 MB | Limelight model runner / ONNX Runtime |
 | `weights/best.pt` | Ultralytics source checkpoint, ~6 MB | re-training, re-exporting, PC use |
 | `weights/best_limelight3a_float32.tflite` | validated float32 TFLite export, 960×960 input, ~12 MB | Limelight 3A testing |
+| `weights/best_limelight3a_int8.tflite` | **int8-weight dynamic-range export** (int8 weights, float activations), float32 in/out, 3.4 MB | Limelight 3A (size/speed-optimized) |
 | `weights/labels.txt` | `yellow_pollen`, `red_nectar`, `blue_nectar` | Limelight 3A labels |
+
+All three artifacts emit the **raw YOLO tensor** `output0` (1×7×18900) — rows
+are [cx, cy, w, h, yellow, red, blue] in the model's 960×960 grid, five
+pre-NMS. Decode + NMS must run on the device or in the FTC pipeline; the model
+itself does not post-process.
 
 ## Viewer (PC / dev)
 
@@ -57,9 +63,20 @@ python -m ultralytics.export model=weights/best.pt format=onnx imgsz=960 opset=1
   (e.g. `640`) lose the tiny far-corner balls — acceptable on constrained
   coprocessors, but measure with this track's own metrics first.
 - Re-upload `best.onnx` to the Limelight after any re-tune.
-- Limelight 3A users should upload `best_limelight3a_float32.tflite` with
-  `labels.txt`; this export was generated from the shipped ONNX model and
-  verified on the included TFLite video test runner.
+- Limelight 3A users should upload `best_limelight3a_float32.tflite` (or the
+  `_int8` dynamic-range variant below) with `labels.txt`; these were generated
+  from the shipped ONNX model and verified on the included TFLite video test
+  runner.
+- `best_limelight3a_int8.tflite` is *dynamic-range* quantization (int8
+  weights, float activations). Full INT8 activations are not possible: the
+  Detect head's per-stride branches keep separate quantization scales, which
+  TFLite forbids on the `CONCAT` (`concatenation` backend error), and a single
+  mixed box+score tensor would collapse the score rows to zero under the
+  box-dominated scale. The dynamic-range variant keeps the exact float32
+  contract and matches the float32 model's detections (≤0.02% box delta on the
+  13-frame verification sweep). Rebuild it with
+  `scripts/export_int8_tflite.py` (requires Python 3.12 + TF in
+  `hive-vision/yolo/.venv-tflite`).
 - The two tracks stay in sync through `cv/tools/fit_hsv_from_yolo.py`, which
   mines the Control Hub HSV ranges straight from this model's detections.
 

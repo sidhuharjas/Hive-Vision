@@ -18,7 +18,10 @@ robot.
 | — | source checkpoint (re-training/re-export) | `../yolo/weights/best.pt` |
 
 Class order is `yellow_pollen`, `red_nectar`, `blue_nectar` — keep
-`labels.txt` matching on the 3A.
+`labels.txt` matching on the 3A. All ONNX/TFLite artifacts emit the **raw
+YOLO tensor** `output0` (1×7×18900) — [cx, cy, w, h, scores ×3] in the model
+grid, pre-NMS. The device or FTC pipeline must decode and NMS; the model does
+no post-processing.
 
 ## The three tracks, compared
 
