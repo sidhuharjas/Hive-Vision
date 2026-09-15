@@ -10,8 +10,7 @@ Jetson, laptop):
 | `weights/best.onnx` | exported ONNX, 960×960 input, opset 12, ~12 MB | Limelight model runner / ONNX Runtime |
 | `weights/best.pt` | Ultralytics source checkpoint, ~6 MB | re-training, re-exporting, PC use |
 | `weights/best_limelight3a_float32.tflite` | validated float32 TFLite export, 960×960 input, ~12 MB | Limelight 3A testing |
-| `weights/best_limelight3a_int8.tflite` | **int8-weight dynamic-range export** (int8 weights, float activations), float32 in/out, 3.4 MB | Limelight 3A (size/speed-optimized) |
-| `weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite` | **SDD-MobileNetV2 retrain from the Limelight online trainer** — the model the 3A actually runs. 8-bit uint8 input 300×300, 4 float32 `TFLite_Detection_PostProcess` outputs, 5.0 MB | Limelight 3A (neural detector) |
+| `weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite` | **SSD-MobileNetV2 retrain from the Limelight online trainer** — the model the 3A actually runs. uint8 300×300 input, float32 `TFLite_Detection_PostProcess` outputs, 5.0 MB | Limelight 3A (neural detector) |
 | `weights/labels.txt` | `yellow_pollen`, `red_nectar`, `blue_nectar` | Limelight 3A labels |
 
 All ONNX artifacts emit the **raw YOLO tensor** `output0` (1×7×18900) — rows
