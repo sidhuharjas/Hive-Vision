@@ -19,3 +19,11 @@ dataset/
 # OS junk
 Thumbs.db
 .DS_Store
+
+# Local / regenerable (TFLite export intermediates and outputs)
+yolo/.venv-tflite/
+yolo/_litert_int8/
+yolo/weights/best_saved_model/
+yolo/weights/best.onnx.data
+demo/frames/
+demo/tflite_test_v7f_int8.mp4

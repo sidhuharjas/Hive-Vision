@@ -1,0 +1,59 @@
+{
+  "colors": {
+    "yellow": {
+      "hue_band": [
+        22.3,
+        105.0
+      ],
+      "sat_floor": 26.08,
+      "l_floor": 8.0
+    },
+    "red": {
+      "hue_band": [
+        335.0,
+        62.0
+      ],
+      "sat_floor": 12.36,
+      "l_floor": 8.0
+    },
+    "blue": {
+      "hue_band": [
+        258.0,
+        326.0
+      ],
+      "sat_floor": 7.44,
+      "l_floor": 8.0
+    }
+  },
+  "ambient": {
+    "ref_l": 51.7,
+    "scl_lo": 0.25,
+    "scl_hi": 1.5
+  },
+  "gate": {
+    "min_area_px": 510,
+    "max_area_px": 19720,
+    "min_aspect": 0.744,
+    "max_aspect": 1.509,
+    "min_fill": 0.5,
+    "max_fill": 1.3
+  },
+  "expect_area": {
+    "yellow": 1950.0,
+    "red": 2986.0,
+    "blue": 3182.0
+  },
+  "best": {
+    "fill_w": 4.0,
+    "edge_w": 1.0
+  },
+  "_meta": {
+    "source": "D:\\ftc-yolo-synth\\ftc-yolo-synth\\reports\\video_shots\\testvid_fused_v7f_raw.mp4",
+    "truth_frames": 293,
+    "boxes_sampled": 400,
+    "frames_sampled": 293,
+    "learned_from": "flagship Hive Vision YOLO (yolo/weights/best.pt)",
+    "hue_bands": "360-degree chromaticity hue; sat floors scale by amb/ref_l",
+    "fp_pass": "2026-09: band edges pulled to YOLO-learned core ([22.3,105] yellow, [335,62] red, [258,326] blue); red floor x1.5; green/orange/blue-violet no-ball patches removed"
+  }
+}

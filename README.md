@@ -4,19 +4,22 @@
 
 Hive Vision is a real-time ball-detection suite for FTC, ready to drop into
 your robot stack. Every game object — the team's balls in their lane colors —
-is found and tracked with two deployment options:
+is found and tracked with three deployment options:
 
 | Track | Where it runs | Cost | Artifacts |
 |-------|---------------|------|-----------|
 | **Limelight (ONNX)** | on the Limelight connected to the robot | small YOLOv8n model | [`yolo/weights/best.onnx`](yolo/README.md) (+ `.pt` source) |
-| **Limelight 3A (TFLite)** | on Limelight 3A | validated float32 TFLite model | [`yolo/weights/best_limelight3a_float32.tflite`](yolo/README.md) + [`labels.txt`](yolo/weights/labels.txt) |
+| **Limelight 3A (TFLite)** | on Limelight 3A | validated float32 + int8-weight TFLite models | [`yolo/weights/best_limelight3a_float32.tflite`](yolo/README.md) / [`best_limelight3a_int8.tflite`](yolo/README.md) + [`labels.txt`](yolo/weights/labels.txt) |
 | **Control Hub (OpenCV)** | on the robot Control Hub itself | none — pure OpenCV, no model | [`TeamCode/BallDetectorPipeline.java`](cv/README.md) |
+| **Control Hub (Lab)** | on the robot Control Hub itself | one Lab conversion, no model | [`TeamCode/LabBallDetectorPipeline.java`](lab/README.md) |
 
-These are two alternative robot deployments. Use the Limelight track when the
-robot has a Limelight; use the Control Hub track when detection must run on the
-Control Hub without a model or coprocessor. The Limelight model detects
-`yellow`, `red`, and `blue` in that class order. The Control Hub detector
-returns color candidates and must be confirmed across several frames before
+These are three alternative robot deployments. Use the Limelight track when the
+robot has a Limelight; use a Control Hub track when detection must run on the
+Control Hub without a model or coprocessor — pick the **Lab** track when balls
+end up in shadows (it is immune to the classic HSV shadow failure), the raw-HSV
+track when you want the absolute cheapest path. The Limelight model detects
+`yellow`, `red`, and `blue` in that class order. The Control Hub detectors
+return color candidates and must be confirmed across several frames before
 the robot acts on one.
 
 ## Deployment tradeoffs
@@ -25,18 +28,25 @@ the robot acts on one.
 |--------|-----------|-----------|
 | Limelight YOLO | More adaptable to shape, distance, blur, and changing backgrounds; generally the stronger accuracy option | Requires a Limelight, model upload, and FTC-side result integration |
 | Control Hub OpenCV | Lightweight, low-cost, and fast to run locally with no model or coprocessor | Less adaptable to lighting, white balance, camera resolution, and colors that resemble the balls; requires field retuning |
+| Control Hub Lab | Same cost as OpenCV, but matches on Lab chromaticity hue with an adaptive chroma floor — the classic HSV shadow failure (a shadowed ball reading as a different color) is largely gone | Slightly more compute than HSV; deep-shadow balls are so desaturated that no color-only detector can see them (then use Limelight YOLO) |
 
-Use OpenCV when simplicity and low hardware cost matter most. Use Limelight
-YOLO when the robot can support it and detection reliability matters more than
-the extra hardware and setup.
+Use OpenCV when simplicity and low hardware cost matter most. Use the Lab
+variant when balls live in shadows. Use Limelight YOLO when the robot can
+support it and detection reliability matters more than the extra hardware and
+setup.
 
 ## Features
 
-- **Two hardware paths, one tuning** — the HSV ranges in the Control Hub
-  track are learned from the Limelight track's detections, so both agree on
-  where the balls are.
-- **No coprocessor, no model** for the hub track — just EasyOpenCV on the
+- **Three paths, one tuning** — every Control Hub variant is learned from the
+  Limelight track's detections (the Lab hue bands/floor via
+  `lab/tools/fit_lab_from_yolo.py`, the HSV ranges likewise), so all three
+  agree on where the balls are.
+- **No coprocessor, no model** for the hub tracks — just EasyOpenCV on the
   Control Hub.
+- **Shadow-proof middle track** — Lab separates lightness from chromaticity,
+  so a ball in shadow keeps its hue and only needs a lower chroma bar, which
+  the detector sets adaptively per frame (measured dark-frame red recall
+  95.5% vs 40% for HSV on the same truth).
 - **~2 confirmable blob candidates per frame** after gating (a 900–12000 px
   ball-size band, squareness, and fill) vs ~50 raw threshold blobs.
 - **Best-blob picker per color** — nearest to the real ball's area and
@@ -97,13 +107,33 @@ python cv/tools/realtime_cv.py --source path/to/match.mp4
 python cv/tools/eval_cv_vs_yolo.py --config cv/tools/hsv_tuned.json --source path/to/match.mp4
 ```
 
+### Control Hub track (Lab — shadow-robust chromaticity, no model)
+
+```bash
+# Preview the Lab detector on your own footage
+python lab/tools/realtime_lab.py --source path/to/match.mp4
+
+# Live-tune the hue band + adaptive chroma floor on a field frame/webcam
+python lab/tools/lab_tuner.py path/to/frame.jpg
+
+# Verify versus the same model truth (learned config in lab/tools/lab_tuned.json)
+python lab/tools/eval_lab_vs_yolo.py --source path/to/match_raw.mp4 \
+  --config lab/tools/lab_tuned.json --compare-hsv
+```
+
 For newer Limelight model runners, upload `yolo/weights/best.onnx`. For
-Limelight 3A, upload `yolo/weights/best_limelight3a_float32.tflite` and use
+Limelight 3A, upload `yolo/weights/best_limelight3a_float32.tflite` or the
+3.4 MB int8-weight variant `yolo/weights/best_limelight3a_int8.tflite`
+(dynamic-range quant — int8 weights, float activations, same float in/out
+contract, detections within 0.02% of float32) and use
 [`yolo/weights/labels.txt`](yolo/weights/labels.txt) with class order
 `yellow_pollen`, `red_nectar`, `blue_nectar`. Read detections through the
-Limelight API used by your FTC integration. For the Control Hub path, copy
-`cv/TeamCode/BallDetectorPipeline.java` into `TeamCode/`, register it with a
-`VisionPortal`, and read `bestOf(BallColor)` — see [cv/README.md](cv/README.md).
+Limelight API used by your FTC integration. For the Control Hub paths, copy
+`cv/TeamCode/BallDetectorPipeline.java` (HSV) or
+`lab/TeamCode/LabBallDetectorPipeline.java` (Lab chromaticity) into
+`TeamCode/`, register the processor with a `VisionPortal`, and read
+`bestOf(BallColor)` — see [cv/README.md](cv/README.md) and
+[lab/README.md](lab/README.md).
 
 ## Publishing the model for Limelight
 
@@ -129,6 +159,7 @@ python -m ultralytics.export model=yolo/weights/best.pt format=onnx imgsz=960 op
 |-------|--------|-----------|------|
 | Limelight (YOLOv8n, 960) | reference | reference | source of ground truth |
 | Control Hub (OpenCV) | yellow 68.7% / red 80.1% / blue 82.3% | 40 / 26 / 66% | treat as a candidate signal |
+| Control Hub (Lab) | yellow 45.5% / red 46.0% / blue 54.5% | 8 / 9 / 8% | measured on *newer* dev footage; dark-frame red recall 95.5% vs 40% for HSV (see [lab report](lab/docs/lab_detector_report.md)) |
 
 ## Repo layout
 
@@ -138,20 +169,33 @@ hive-vision/
     weights/best.pt           YOLOv8n source checkpoint (6 MB)
     weights/best.onnx         exported ONNX for Limelight (12 MB)
     weights/best_limelight3a_float32.tflite  validated Limelight 3A model (12 MB)
+    weights/best_limelight3a_int8.tflite     int8-weight 3A model (3.4 MB)
     weights/labels.txt        class labels: pollen/nectar order
     scripts/                  live viewer + annotated-video exporter
-  cv/                         Control Hub track
+  cv/                         Control Hub track (HSV)
     TeamCode/                 VisionPortal processor (drop-in for the FTC SDK)
     tools/                    tuning/eval tooling + shipped HSV config
     docs/                     evaluation report, cached model truth
+  lab/                        Control Hub track (Lab chromaticity)
+    TeamCode/                 LabBallDetectorPipeline.java (drop-in processor)
+    tools/                    YOLO-learned config, fitter, sweep, tuner, viewer
+    docs/                     evaluation report, cached YOLO truth
+  shipping/                   ready-to-ship handbook (artifacts, comparison, checklist)
   demo/                       short annotated example clips
   logo.png                    project logo
   LICENSE                     MIT — Copyright (c) 2026 Harjas Sidhu
 ```
 
+## Shipping
+
+Ready to deploy? Start at
+[`shipping/SHIP_README.md`](shipping/SHIP_README.md) — one checklist and one
+place listing every artifact, where it goes, the three-track comparison, the
+int8 rationale, and the two remaining hardware-validation steps.
+
 ## Demo clips
 
-These short 1920x1080 clips show the two deployment paths on real footage.
+These short 1920x1080 clips show the deployment paths on real footage.
 They were sourced from the [kickoff video](https://www.youtube.com/watch?v=gO98TkgY0kI)
 and are examples for visual inspection, not a replacement for field testing
 or the precision/recall measurements in the CV report.
@@ -166,6 +210,7 @@ own footage if permission is unclear.
 | [`demo/yolo_example_3.mp4`](demo/yolo_example_3.mp4) | Limelight/YOLO example |
 | [`demo/control_hub_cv_example_1.mp4`](demo/control_hub_cv_example_1.mp4) | Control Hub/OpenCV example |
 | [`demo/control_hub_cv_example_2.mp4`](demo/control_hub_cv_example_2.mp4) | Control Hub/OpenCV example |
+| [`demo/cielab_demo.mp4`](demo/cielab_demo.mp4) | CIELAB (Lab track) example — own match capture |
 
 ### Automatic video previews
 
