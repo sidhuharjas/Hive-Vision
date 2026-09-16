@@ -249,10 +249,10 @@ Discord `@Destroyer` (handle `destroyer5782`).
 |------|-------|
 | [`demo/yolo_example_1.mp4`](demo/yolo_example_1.mp4) | Limelight/YOLO example |
 | [`demo/yolo_example_2.mp4`](demo/yolo_example_2.mp4) | Limelight/YOLO example |
-| [`demo/yolo_example_3.mp4`](demo/yolo_example_3.mp4) | Limelight/YOLO example |
+| [`demo/yolo_example_3.mp4`](demo/yolo_example_3.mp4) | Limelight 3A SSD-MobileNetV2 example |
 | [`demo/control_hub_cv_example_1.mp4`](demo/control_hub_cv_example_1.mp4) | Control Hub/OpenCV example |
 | [`demo/control_hub_cv_example_2.mp4`](demo/control_hub_cv_example_2.mp4) | Control Hub/OpenCV example |
-| [`demo/ssd_mobilenetv2_demo.mp4`](demo/ssd_mobilenetv2_demo.mp4) | Limelight 3A SSD-MobileNetV2 example — same footage as the Lab track capture |
+| [`demo/cielab_demo.mp4`](demo/cielab_demo.mp4) | CIELAB (Lab track) example — own match capture |
 | [`demo/ssd_in_action.mp4`](demo/ssd_in_action.mp4) | Limelight 3A SSD-MobileNetV2 tested in the real world — recorded by Javi Nashat, Lazer Robotics 23286 |
 
 ### Automatic video previews
@@ -270,7 +270,7 @@ for the full-resolution clips with playback controls.
 
 ![Control Hub OpenCV example 2](demo/previews/control_hub_cv_example_2.gif)
 
-![SSD-MobileNetV2 example](demo/previews/ssd_mobilenetv2_demo.gif)
+![CIELAB example](demo/previews/cielab_demo.gif)
 
 ![SSD-MobileNetV2 in action](demo/previews/ssd_in_action.gif)
 
