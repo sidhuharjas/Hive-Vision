@@ -1,13 +1,15 @@
-# Hive Vision — Limelight track (ONNX / YOLO)
+# Hive Vision — Limelight 3A (TFLite) + ONNX reference track
 
 The model track of Hive Vision: a lightweight YOLOv8n detector trained on
 thousands of synthetically rendered frames of the team's CAD ball plus real
-match footage. Ships two artifacts for any ONNX-capable device (Limelight,
-Jetson, laptop):
+match footage. It ships an SSD-MobileNetV2 TFLite model for the Limelight 3A
+and a YOLOv8n ONNX export for **ONNX Runtime hosts** (Jetson, laptop). Note:
+no Limelight runs ONNX — Limelight neural detectors accept `.tflite` or Hailo
+`.hef` models only, so the ONNX export never goes on a Limelight of any kind:
 
 | File | What it is | Use on |
 |------|------------|--------|
-| `weights/best.onnx` | exported ONNX, 960×960 input, opset 12, ~12 MB | Limelight model runner / ONNX Runtime |
+| `weights/best.onnx` | exported ONNX, 960×960 input, opset 12, ~12 MB | ONNX Runtime only (PC / Jetson / coprocessor) — not a Limelight |
 | `weights/best.pt` | Ultralytics source checkpoint, ~6 MB | re-training, re-exporting, PC use |
 | `weights/best_limelight3a_float32.tflite` | validated **float32** TFLite export, 960×960 input, ~12 MB (float32 in/out — **not** full-INT8, so the 3A neural detector will not load it) | PC / ONNX Runtime testing only |
 | `weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite` | **SSD-MobileNetV2 retrain from the Limelight online trainer** — the model the 3A actually runs. uint8 300×300 input, float32 `TFLite_Detection_PostProcess` outputs, 5.0 MB | Limelight 3A (neural detector) |
@@ -61,7 +63,7 @@ Verify the ONNX itself:
 python -c "from ultralytics import YOLO; YOLO('weights/best.onnx').predict('test.jpg', imgsz=960)"
 ```
 
-## Re-exporting / tuning for Limelight
+## Re-exporting / tuning models
 
 ```bash
 python -m ultralytics.export model=weights/best.pt format=onnx imgsz=960 opset=12
@@ -70,11 +72,12 @@ python -m ultralytics.export model=weights/best.pt format=onnx imgsz=960 opset=1
 - **imgsz matters.** The dev baseline was measured at `960`; smaller values
   (e.g. `640`) lose the tiny far-corner balls — acceptable on constrained
   coprocessors, but measure with this track's own metrics first.
-- Re-upload `best.onnx` to the Limelight after any re-tune.
-- Limelight 3A users should upload `best_limelight3a_float32.tflite` (or the
-  `_int8` dynamic-range variant below) with `labels.txt`; these were generated
-  from the shipped ONNX model and verified on the included TFLite video test
-  runner.
+- Re-export and re-upload `best.onnx` to your ONNX Runtime host after any
+  re-tune (a Limelight will not load it).
+- Limelight 3A users should upload `best_limelight3a_ssd_mobilenetv2_300x300.tflite`
+  with `labels.txt` — the SSD-MobileNetV2 model described above. The YOLO
+  float32/int8 exports below are PC verification artifacts and will not load on
+  the 3A.
 - `best_limelight3a_int8.tflite` is *dynamic-range* quantization (int8
   weights, float activations). Full INT8 activations are not possible: the
   Detect head's per-stride branches keep separate quantization scales, which

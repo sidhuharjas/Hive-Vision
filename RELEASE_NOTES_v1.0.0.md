@@ -2,14 +2,15 @@
 
 Hive Vision is an FTC ball-detection toolkit with two deployment options:
 
-- **Limelight YOLO:** a YOLOv8n model exported to ONNX for Limelight model-runner deployment.
+- **Limelight 3A (SSD-MobileNetV2):** a TFLite detector that runs on the Limelight 3A neural detector (CPU runtime).
+- **PC / ONNX Runtime YOLO:** a YOLOv8n reference model exported to ONNX for ONNX Runtime hosts (dev PC, Jetson). Limelight neural detectors do not run ONNX.
 - **Control Hub OpenCV:** a lightweight VisionPortal processor that runs color and shape detection directly on the Control Hub without a model or coprocessor.
 
 ## Included
 
-- `yolo/weights/best.onnx` for Limelight
-- `yolo/weights/best_limelight3a_float32.tflite` for Limelight 3A
+- `yolo/weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite` for Limelight 3A
 - `yolo/weights/labels.txt` with Pollen/Nectar class names
+- `yolo/weights/best.onnx` for PC / ONNX Runtime (not a Limelight)
 - `yolo/weights/best.pt` for PC inference and future export or tuning
 - Control Hub `VisionProcessor` implementation
 - HSV tuning and evaluation tools

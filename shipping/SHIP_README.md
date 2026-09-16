@@ -8,20 +8,23 @@ robot.
 
 | Destination | Artifact | Path |
 |-------------|----------|------|
-| Limelight (model runner) | YOLOv8n ONNX, 960×960 | `../yolo/weights/best.onnx` |
-| Limelight 3A | TFLite float32 model | `../yolo/weights/best_limelight3a_float32.tflite` |
-| Limelight 3A | TFLite int8-weight (DRQ) model, 3.4 MB | `../yolo/weights/best_limelight3a_int8.tflite` |
+| Limelight 3A | SSD-MobileNetV2 300×300 (uint8-in, float out) | `../yolo/weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite` |
 | Limelight 3A | class labels | `../yolo/weights/labels.txt` |
+| PC / ONNX Runtime (Jetson, dev PC) | YOLOv8n ONNX, 960×960 (no Limelight runs ONNX) | `../yolo/weights/best.onnx` |
+| PC only | YOLO float32 TFLite test artifact | `../yolo/weights/best_limelight3a_float32.tflite` |
+| PC only | YOLO int8-weight (DRQ) TFLite test artifact, 3.4 MB | `../yolo/weights/best_limelight3a_int8.tflite` |
 | Control Hub | HSV Java pipeline | `../cv/TeamCode/BallDetectorPipeline.java` |
 | Control Hub | Lab chromaticity Java pipeline | `../lab/TeamCode/LabBallDetectorPipeline.java` |
 | Control Hub | Lab learned config | `../lab/tools/lab_tuned.json` |
 | — | source checkpoint (re-training/re-export) | `../yolo/weights/best.pt` |
 
 Class order is `yellow_pollen`, `red_nectar`, `blue_nectar` — keep
-`labels.txt` matching on the 3A. All ONNX/TFLite artifacts emit the **raw
-YOLO tensor** `output0` (1×7×18900) — [cx, cy, w, h, scores ×3] in the model
-grid, pre-NMS. The device or FTC pipeline must decode and NMS; the model does
-no post-processing.
+`labels.txt` matching on the 3A. The SSD-MobileNetV2 3A model emits
+**`TFLite_Detection_PostProcess`** outputs (`num`, `scores`, `class_ids`,
+`boxes`) already decoded — no NMS needed on your side. The ONNX and the YOLO
+float32/int8 TFLite exports instead emit the **raw YOLO tensor** `output0`
+(1×7×18900) — [cx, cy, w, h, scores ×3] in the model grid, pre-NMS — and the
+device or FTC pipeline must decode and NMS those itself.
 
 ## The three tracks, compared
 
@@ -31,7 +34,7 @@ share the same geometry gates):
 
 | Tracker | Runs on | Principle | Yellow rec/prec | Red rec/prec | Blue rec/prec | Dark-red recall |
 |---------|---------|-----------|-----------------|--------------|---------------|-----------------|
-| **YOLO** | coprocessor (Limelight) only | shape + context (CNN) | — ground truth — | — ground truth — | — ground truth — | ~100% |
+| **YOLO** | PC / ONNX Runtime (reference — not a Limelight) | shape + context (CNN) | — ground truth — | — ground truth — | — ground truth — | ~100% |
 | **HSV (cv/)** | Control Hub | tuned HSV window | 62.0 / 10.5 | 34.5 / 8.6 | 52.8 / 11.1 | 40.0% |
 | **Lab (lab/)** | Control Hub | learned Lab hue band + adaptive chroma floor | 45.5 / 7.5 | 46.0 / 8.7 | 54.5 / 8.1 | **95.5%** |
 
@@ -72,8 +75,8 @@ it outputs zero detections.
 - [x] Lab dark-frame red recall 95.5% vs HSV 40.0% (same truth, same gates)
 - [x] Java pipelines compile against the FTC SDK (`bestOf(BallColor)`)
 - [x] Config + report + README numbers in sync
-- [ ] **Upload float32 → 3A once on hardware, confirm the pipeline loads and
-      reports detections** (PC runner verifies the model, not the device)
+- [ ] **Upload the SSD tflite → 3A once on hardware, confirm the pipeline loads
+      and reports detections** (PC runner verifies the model, not the device)
 - [ ] **Run at confidence 0.35–0.45 on the 3A** — 0.25 produces visible false
       positives (identical on float32; it is a threshold property, not a
       quantization defect)
