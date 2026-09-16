@@ -23,8 +23,12 @@ fixes that.
 
 ## Detection quality (test frames)
 
-- Same detections as the locally retrained model on all test frames.
-- Confidences 0.87–0.92 on the multi-ball clip.
+- **Independent model.** SSD-MobileNetV2 is its own architecture — unrelated
+  to the local YOLO retrain (`best.pt`/`best.onnx`). Different input size,
+  different backbone, no shared weights; do **not** expect it to match the
+  YOLO detections. This is the model the 3A runs, full stop.
+- Confidences 0.87–0.92 on the multi-ball clip (excludes the filtered
+  low-confidence false positives).
 - Yellow pollen, red nectar, and blue nectar all detected and classified
   correctly.
 
