@@ -247,9 +247,9 @@ Discord `@Destroyer` (handle `destroyer5782`).
 
 | Clip | Track |
 |------|-------|
-| [`demo/yolo_example_1.mp4`](demo/yolo_example_1.mp4) | Limelight/YOLO example |
-| [`demo/yolo_example_2.mp4`](demo/yolo_example_2.mp4) | Limelight/YOLO example |
-| [`demo/yolo_example_3.mp4`](demo/yolo_example_3.mp4) | Limelight 3A SSD-MobileNetV2 example |
+| [`demo/yolo_example_1.mp4`](demo/yolo_example_1.mp4) | YOLO example |
+| [`demo/yolo_example_2.mp4`](demo/yolo_example_2.mp4) | YOLO example |
+| [`demo/ssd_mobilenetv2.mp4`](demo/ssd_mobilenetv2.mp4) | Limelight 3A SSD-MobileNetV2 example |
 | [`demo/control_hub_cv_example_1.mp4`](demo/control_hub_cv_example_1.mp4) | Control Hub/OpenCV example |
 | [`demo/control_hub_cv_example_2.mp4`](demo/control_hub_cv_example_2.mp4) | Control Hub/OpenCV example |
 | [`demo/cielab_demo.mp4`](demo/cielab_demo.mp4) | CIELAB (Lab track) example — own match capture |
@@ -264,7 +264,7 @@ for the full-resolution clips with playback controls.
 
 ![YOLO example 2](demo/previews/yolo_example_2.gif)
 
-![YOLO example 3](demo/previews/yolo_example_3.gif)
+![SSD-MobileNetV2 example](demo/previews/ssd_mobilenetv2.gif)
 
 ![Control Hub OpenCV example 1](demo/previews/control_hub_cv_example_1.gif)
 
