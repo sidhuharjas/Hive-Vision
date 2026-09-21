@@ -6,7 +6,7 @@ commands, and viewer tools are in
 [cv/README.md](https://github.com/sidhuharjas/Hive-Vision/blob/main/cv/README.md)
 and
 [lab/README.md](https://github.com/sidhuharjas/Hive-Vision/blob/main/lab/README.md).
-This page only adds the decision + the operator gotchas.
+This page covers the decision and what to expect from the outputs.
 
 ## Pick
 
@@ -15,7 +15,7 @@ This page only adds the decision + the operator gotchas.
 - A ball deep in shadow is too desaturated for *any* color-only detector — that
   case belongs to the Limelight 3A track.
 
-## Gotchas
+## What to know
 
 - Expect **7–11% precision** on a real field. The hub outputs are candidates —
   confirm each across several frames before the robot acts.

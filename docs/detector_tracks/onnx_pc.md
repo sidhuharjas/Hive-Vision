@@ -10,7 +10,7 @@ Short version:
 - **Run**: `python yolo/scripts/detect_video_realtime.py --weights yolo/weights/best.pt`.
 - **Never** upload this to a Limelight.
 
-Two things to know that the README only implies:
+Two things to know, stated plainly:
 
 - This is the **ground truth** the Control Hub tracks are tuned/scored against —
   use it when you're measuring a color detector, not the hub detector itself.
