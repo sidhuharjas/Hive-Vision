@@ -2,31 +2,15 @@
 
 A middle track between the two shipped Hive Vision paths:
 
-| track | what | cost |
-|-------|------|------|
-| YOLO (Limelight) | full CNN, shape + context | coprocessor required |
-| **Lab (this)** | CIELAB chromaticity hue + adaptive chroma floor | runs on the Control Hub, no model |
-| HSV (Control Hub) | 3 raw HSV boxes, luminance-coupled | cheapest, shadow-fragile |
+| track             | what                                            | cost                              |
+| ----------------- | ----------------------------------------------- | --------------------------------- |
+| YOLO (Limelight)  | full CNN, shape + context                       | coprocessor required              |
+| **Lab (this)**    | CIELAB chromaticity hue + adaptive chroma floor | runs on the Control Hub, no model |
+| HSV (Control Hub) | 3 raw HSV boxes, luminance-coupled              | cheapest, shadow-fragile          |
 
-The Lab detector converts each frame `RGB→Lab` **once**, computes one per-pixel
-chromaticity hue `atan2(b*, a*)` and chroma `sqrt(a*² + b*²)`, and thresholds
-them with constants that were **learned from the flagship YOLO model** on real
-match footage — so it inherits the YOLO's color language while running with
-zero model inference on the hub. Because lightness (L*) is a separate channel,
-a ball in shadow keeps its hue and simply needs a *lower* chroma bar, which the
-detector sets adaptively from the frame's median brightness.
+The Lab detector converts each frame `RGB→Lab` **once**, computes one per-pixel chromaticity hue `atan2(b*, a*)` and chroma `sqrt(a*² + b*²)`, and thresholds them with constants that were **learned from the flagship YOLO model** on real match footage — so it inherits the YOLO's color language while running with zero model inference on the hub. Because lightness (L\*) is a separate channel, a ball in shadow keeps its hue and simply needs a _lower_ chroma bar, which the detector sets adaptively from the frame's median brightness.
 
-Deep-shadow caveat: when a ball's chroma collapses toward zero (sensor stops
-reporting color) no color-only detector can see it — that is the YOLO track's
-job. Mid shadows are exactly where this track beats HSV. Measured head-to-head
-numbers are in [`docs/lab_detector_report.md`](docs/lab_detector_report.md).
-
-## In action
-
-The Lab detector on an own match capture — CIELAB chromaticity hue with the
-adaptive chroma floor keeps balls in shadows visible:
-
-![Lab detector in action](demo/cielab_demo.gif)
+Deep-shadow caveat: when a ball's chroma collapses toward zero (sensor stops reporting color) no color-only detector can see it — that is the YOLO track's job. Mid shadows are exactly where this track beats HSV. Measured head-to-head numbers are in [`docs/lab_detector_report.md`](docs/lab_detector_report.md).
 
 ## Files
 
@@ -64,11 +48,9 @@ LabBallDetectorPipeline.BallBlob ball = pipeline.bestOf(LabBallDetectorPipeline.
 if (ball != null) { /* steer using ball.cxNorm, ball.cyNorm */ }
 ```
 
-Confirm a candidate across a few frames before moving — the detector is a
-candidate signal, not ground truth (same contract as the HSV track).
+Confirm a candidate across a few frames before moving — the detector is a candidate signal, not ground truth (same contract as the HSV track).
 
-Area gates are stored per-1080p and scaled automatically to the live camera
-resolution; `aspect`/`fill` are already scale-free.
+Area gates are stored per-1080p and scaled automatically to the live camera resolution; `aspect`/`fill` are already scale-free.
 
 ## Re-tuning
 
@@ -86,13 +68,8 @@ python tools/fit_lab_from_yolo.py --source path/to/match_raw.mp4 --out lab_tuned
   --truth-json docs/yolo_truth_lab.json
 ```
 
-Copy the printed values into `LabBallDetectorPipeline.java`'s `YELLOW_LO`,
-`RED_LO`, `BLUE_LO`, `YELLOW_SAT`, `RED_SAT`, `BLUE_SAT` and the `REF_L`
-constants.
+Copy the printed values into `LabBallDetectorPipeline.java`'s `YELLOW_LO`, `RED_LO`, `BLUE_LO`, `YELLOW_SAT`, `RED_SAT`, `BLUE_SAT` and the `REF_L` constants.
 
 ## Ground truth / license notes
 
-`docs/yolo_truth_lab.json` is derived by running the **flagship YOLO model**
-(`../yolo/weights/best.pt`, Ultralytics, AGPL-3.0 — see
-[`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md)) over development footage;
-the JSON itself is a list of frame-wise ball boxes and carries no model weights.
+`docs/yolo_truth_lab.json` is derived by running the **flagship YOLO model** (`../yolo/weights/best.pt`, Ultralytics, AGPL-3.0 — see [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md)) over development footage; the JSON itself is a list of frame-wise ball boxes and carries no model weights.
