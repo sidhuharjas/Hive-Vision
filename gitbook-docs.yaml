@@ -27,15 +27,3 @@ site:
           default: true
           content:
             directory: ./updates
-    - type: section
-      key: section-shipping
-      title: Ship
-      path: ship
-      children:
-        - type: space
-          key: space-shipping
-          title: Shipping handbook
-          path: shipping-handbook
-          default: true
-          content:
-            directory: ./shipping
