@@ -3,22 +3,10 @@ site:
   title: Hive Vision
   structure:
     - type: section
-      key: section-get-started
-      title: Get started
-      path: get-started
-      default: true
-      children:
-        - type: space
-          key: space-overview
-          title: Overview
-          path: overview
-          default: true
-          content:
-            directory: ./docs
-    - type: section
       key: section-tracks
       title: Detector tracks
       path: detector-tracks
+      default: true
       children:
         - type: space
           key: space-yolo
@@ -39,6 +27,18 @@ site:
           path: control-hub-lab
           content:
             directory: ./lab
+    - type: section
+      key: section-get-started
+      title: Get started
+      path: get-started
+      children:
+        - type: space
+          key: space-overview
+          title: Overview
+          path: overview
+          default: true
+          content:
+            directory: ./docs
     - type: section
       key: section-shipping
       title: Ship
