@@ -3,10 +3,10 @@
 Hive Vision is a real-time FTC ball-detection suite (`yellow_pollen`, `red_nectar`, `blue_nectar`). The repo README is the source of truth for everything technical; this book exists to (a) help a new team pick a track and (b) give step-by-step setup instructions you can follow with the camera on the bench.
 
 * [Which detector track?](detector_tracks/) — the decision guide
-* [Set up the Limelight 3A](limelight_3a_setup.md) — step by step, wire to code
-* [Limelight 3A (SSD)](detector_tracks/limelight_3a_ssd.md)
-* [PC / ONNX Runtime (YOLO)](detector_tracks/onnx_pc.md)
-* [Control Hub (OpenCV + Lab)](detector_tracks/control_hub.md)
+* [Limelight 3A (SSD)](detector_tracks/limelight_3a_ssd.md) — [set it up](detector_tracks/limelight_3a_setup.md)
+* [PC / ONNX Runtime (YOLO)](detector_tracks/onnx_pc.md) — [run it on a PC](detector_tracks/onnx_run_pc.md)
+* [Control Hub (OpenCV + Lab)](detector_tracks/control_hub.md) — [HSV setup](detector_tracks/hub_hsv_setup.md) · [Lab setup](detector_tracks/hub_lab_setup.md)
+* [Collecting training data](training_data.md)
 * [Deployment checklist](deployment_checklist.md) — what ships where
 
 Classes are always `yellow_pollen`=0, `red_nectar`=1, `blue_nectar`=2.

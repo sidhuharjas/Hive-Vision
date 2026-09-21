@@ -2,7 +2,8 @@
 
 The reference model + dev tooling. Model details, commands, and export notes
 are all in
-[yolo/README.md](https://github.com/sidhuharjas/Hive-Vision/blob/main/yolo/README.md).
+[yolo/README.md](https://github.com/sidhuharjas/Hive-Vision/blob/main/yolo/README.md),
+and the step-by-step is on [Run YOLO on a PC](onnx_run_pc.md).
 Short version:
 
 - **Model**: `yolo/weights/best.onnx`, 960×960 input, raw YOLO tensor output

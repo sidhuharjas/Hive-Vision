@@ -5,7 +5,9 @@ Two model-free hub tracks: `cv/TeamCode/BallDetectorPipeline.java` (HSV) and
 commands, and viewer tools are in
 [cv/README.md](https://github.com/sidhuharjas/Hive-Vision/blob/main/cv/README.md)
 and
-[lab/README.md](https://github.com/sidhuharjas/Hive-Vision/blob/main/lab/README.md).
+[lab/README.md](https://github.com/sidhuharjas/Hive-Vision/blob/main/lab/README.md),
+or follow the step-by-step: [Set up the HSV track](hub_hsv_setup.md) ·
+[Set up the Lab track](hub_lab_setup.md).
 This page covers the decision and what to expect from the outputs.
 
 ## Pick

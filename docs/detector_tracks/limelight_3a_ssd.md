@@ -4,7 +4,7 @@ The on-robot neural track: a TFLite **SSD-MobileNetV2** model trained on the
 same synthetic + real corpus as the YOLOv8n reference, running on the
 Limelight 3A's own CPU. The decision guide is in
 [Which detector track?](README.md); wire it up step by step with the
-[set-up walkthrough](../limelight_3a_setup.md). Model details and export notes
+[set-up walkthrough](limelight_3a_setup.md). Model details and export notes
 are in [yolo/README.md](https://github.com/sidhuharjas/Hive-Vision/blob/main/yolo/README.md).
 Short version:
 
