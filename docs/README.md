@@ -14,12 +14,12 @@ Classes are always `yellow_pollen`=0, `red_nectar`=1, `blue_nectar`=2.
 
 Same kickoff footage through each detector:
 
-![Limelight 3A (SSD)](demo/previews/ssd_mobilenetv2.gif)
+![Limelight 3A (SSD)](.gitbook/assets/ssd_mobilenetv2.gif)
 
-![Control Hub (OpenCV)](demo/previews/control_hub_cv_example_1.gif)
+![Control Hub (OpenCV)](.gitbook/assets/control_hub_cv_example_1.gif)
 
-![Control Hub (Lab)](demo/previews/cielab_demo.gif)
+![Control Hub (Lab)](.gitbook/assets/cielab_demo.gif)
 
 The Limelight 3A model in the real world:
 
-![Limelight 3A in action](demo/previews/ssd_in_action.gif)
+![Limelight 3A in action](.gitbook/assets/ssd_in_action.gif)
