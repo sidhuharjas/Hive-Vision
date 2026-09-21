@@ -2,6 +2,8 @@
 
 <p align="center"><img src="logo.png" alt="Hive Vision" width="360"/></p>
 
+Full docs: <https://sidhuharjas.gitbook.io/hive-vision>
+
 Hive Vision is a real-time ball-detection suite for FTC, ready to drop into
 your robot stack. Every game object — the team's balls in their lane colors —
 is found and tracked with three deployment options:
