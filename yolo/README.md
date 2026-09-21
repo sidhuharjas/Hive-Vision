@@ -16,16 +16,15 @@ The `ssd_mobilenetv2_300x300` model is different by design: it is the SSD `TFLit
 
 ## In action
 
-Same kickoff-video frame through the model at two confidence thresholds —
-0.25 (recall-biased) and 0.50 (precision-biased):
+Same kickoff-video frame through the model at two confidence thresholds — 0.25 (recall-biased) and 0.50 (precision-biased):
 
-![YOLO at confidence 0.25](demo/yolo_sample_1_conf25.jpg)
+![YOLO at confidence 0.25](.gitbook/assets/yolo_sample_1_conf25.jpg)
 
-![YOLO at confidence 0.50](demo/yolo_sample_2_conf50.jpg)
+![YOLO at confidence 0.50](.gitbook/assets/yolo_sample_2_conf50.jpg)
 
 A sample from the TFLite test runner over the same footage:
 
-![TFLite test sample](demo/tflite_test_v7f_sample.jpg)
+![TFLite test sample](.gitbook/assets/tflite_test_v7f_sample.jpg)
 
 ## Viewer (PC / dev)
 
