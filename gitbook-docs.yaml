@@ -1,0 +1,54 @@
+$schema: https://api.gitbook.com/gitbook-docs.yaml
+version: 1
+site:
+  title: Hive Vision
+  structure:
+    - type: section
+      key: section-get-started
+      title: Get started
+      path: get-started
+      default: true
+      children:
+        - type: space
+          key: space-overview
+          title: Overview
+          path: overview
+          default: true
+          content:
+            directory: ./docs
+    - type: section
+      key: section-tracks
+      title: Detector tracks
+      path: detector-tracks
+      children:
+        - type: space
+          key: space-yolo
+          title: YOLO & Limelight
+          path: yolo-limelight
+          default: true
+          content:
+            directory: ./yolo
+        - type: space
+          key: space-cv
+          title: Control Hub (OpenCV)
+          path: control-hub-opencv
+          content:
+            directory: ./cv
+        - type: space
+          key: space-lab
+          title: Control Hub (Lab)
+          path: control-hub-lab
+          content:
+            directory: ./lab
+    - type: section
+      key: section-shipping
+      title: Ship
+      path: ship
+      children:
+        - type: space
+          key: space-shipping
+          title: Shipping handbook
+          path: shipping-handbook
+          default: true
+          content:
+            directory: ./shipping
