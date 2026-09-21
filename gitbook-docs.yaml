@@ -6,8 +6,6 @@ site:
       key: section-get-started
       title: Get started
       path: get-started
-      description: What Hive Vision detects, how the deployment tracks compare, and what to collect before you ship.
-      icon: compass
       default: true
       children:
         - type: space
@@ -21,13 +19,11 @@ site:
       key: section-tracks
       title: Detector tracks
       path: detector-tracks
-      description: The three ball-detection deployments — Limelight 3A (TFLite/ONNX), Control Hub OpenCV, and Control Hub Lab. Every page shows the detector running on real footage.
-      icon: stack
       children:
         - type: space
           key: space-yolo
-          title: Limelight 3A & ONNX
-          path: limelight-yolo
+          title: YOLO & Limelight
+          path: yolo-limelight
           default: true
           content:
             directory: ./yolo
@@ -45,15 +41,13 @@ site:
             directory: ./lab
     - type: section
       key: section-shipping
-      title: Shipping
-      path: shipping
-      description: The pre-flight handbook — artifact manifest, three-track comparison, and the verified checklist that takes a robot from repo to field.
-      icon: package
+      title: Ship
+      path: ship
       children:
         - type: space
           key: space-shipping
-          title: Deployment handbook
-          path: handbook
+          title: Shipping handbook
+          path: shipping-handbook
           default: true
           content:
             directory: ./shipping
