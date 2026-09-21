@@ -14,6 +14,19 @@ All ONNX artifacts emit the **raw YOLO tensor** `output0` (1×7×18900) — rows
 
 The `ssd_mobilenetv2_300x300` model is different by design: it is the SSD `TFLite_Detection_PostProcess` contract the 3A requires (full-INT8 uint8 input, float32 outputs: num detections, scores `[1,10]`, class ids `[1,10]` 0=yellow 1=red 2=blue, boxes `[1,10,4]` normalized ymin,xmin,ymax,xmax). It was trained on the same synthetic V7f ball corpus and cross-checked against the locally trained equivalent (identical detections on all test frames). This is the artifact to upload to the 3A's Neural Detector.
 
+## In action
+
+Same kickoff-video frame through the model at two confidence thresholds —
+0.25 (recall-biased) and 0.50 (precision-biased):
+
+![YOLO at confidence 0.25](demo/yolo_sample_1_conf25.jpg)
+
+![YOLO at confidence 0.50](demo/yolo_sample_2_conf50.jpg)
+
+A sample from the TFLite test runner over the same footage:
+
+![TFLite test sample](demo/tflite_test_v7f_sample.jpg)
+
 ## Viewer (PC / dev)
 
 ```bash
