@@ -1,8 +1,8 @@
 # Table of contents
 
 * [Overview](README.md)
+* [Set up the Limelight 3A](limelight_3a_setup.md)
 * [Which detector track?](detector_tracks/README.md)
-  * [Limelight 3A (SSD)](detector_tracks/limelight_3a_setup.md)
   * [PC / ONNX Runtime (YOLO)](detector_tracks/onnx_pc.md)
   * [Control Hub (OpenCV + Lab)](detector_tracks/control_hub.md)
 * [Collecting training data](training_data.md)
