@@ -3,34 +3,10 @@ site:
   title: Hive Vision
   structure:
     - type: section
-      key: section-tracks
-      title: Detector tracks
-      path: detector-tracks
-      default: true
-      children:
-        - type: space
-          key: space-yolo
-          title: YOLO & Limelight
-          path: yolo-limelight
-          default: true
-          content:
-            directory: ./yolo
-        - type: space
-          key: space-cv
-          title: Control Hub (OpenCV)
-          path: control-hub-opencv
-          content:
-            directory: ./cv
-        - type: space
-          key: space-lab
-          title: Control Hub (Lab)
-          path: control-hub-lab
-          content:
-            directory: ./lab
-    - type: section
       key: section-get-started
       title: Get started
       path: get-started
+      default: true
       children:
         - type: space
           key: space-overview
@@ -39,6 +15,18 @@ site:
           default: true
           content:
             directory: ./docs
+    - type: section
+      key: section-updates
+      title: Updates
+      path: updates
+      children:
+        - type: space
+          key: space-updates
+          title: Updates & releases
+          path: updates-releases
+          default: true
+          content:
+            directory: ./updates
     - type: section
       key: section-shipping
       title: Ship
