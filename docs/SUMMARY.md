@@ -1,6 +1,7 @@
 # Table of contents
 
 * [Which detector track?](detector_tracks/README.md)
+  * [Limelight 3A (SSD)](detector_tracks/limelight_3a_ssd.md)
   * [PC / ONNX Runtime (YOLO)](detector_tracks/onnx_pc.md)
   * [Control Hub (OpenCV + Lab)](detector_tracks/control_hub.md)
 * [Overview](README.md)

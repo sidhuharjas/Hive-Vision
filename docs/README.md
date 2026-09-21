@@ -4,6 +4,7 @@ Hive Vision is a real-time FTC ball-detection suite (`yellow_pollen`, `red_necta
 
 * [Which detector track?](detector_tracks/) — the decision guide
 * [Set up the Limelight 3A](limelight_3a_setup.md) — step by step, wire to code
+* [Limelight 3A (SSD)](detector_tracks/limelight_3a_ssd.md)
 * [PC / ONNX Runtime (YOLO)](detector_tracks/onnx_pc.md)
 * [Control Hub (OpenCV + Lab)](detector_tracks/control_hub.md)
 * [Deployment checklist](deployment_checklist.md) — what ships where
