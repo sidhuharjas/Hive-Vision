@@ -28,6 +28,19 @@ was trained on the same synthetic V7f ball corpus and cross-checked against
 the locally trained equivalent (identical detections on all test frames). This
 is the artifact to upload to the 3A's Neural Detector.
 
+## In action
+
+Same kickoff-video frame through the model at two confidence thresholds —
+0.25 on the left (recall-biased), 0.50 on the right (precision-biased):
+
+![YOLO at confidence 0.25](demo/yolo_sample_1_conf25.jpg)
+
+![YOLO at confidence 0.50](demo/yolo_sample_2_conf50.jpg)
+
+A sample from the TFLite test runner over the same footage:
+
+![TFLite test sample](demo/tflite_test_v7f_sample.jpg)
+
 ## Viewer (PC / dev)
 
 ```bash

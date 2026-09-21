@@ -21,6 +21,13 @@ reporting color) no color-only detector can see it — that is the YOLO track's
 job. Mid shadows are exactly where this track beats HSV. Measured head-to-head
 numbers are in [`docs/lab_detector_report.md`](docs/lab_detector_report.md).
 
+## In action
+
+The Lab detector on an own match capture — CIELAB chromaticity hue with the
+adaptive chroma floor keeps balls in shadows visible:
+
+![Lab detector in action](demo/cielab_demo.gif)
+
 ## Files
 
 ```

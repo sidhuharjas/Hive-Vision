@@ -4,6 +4,13 @@ Everything needed to deploy the full three-track stack, gathered in one place.
 Work through the checklist, then hand the artifacts to whoever flashes the
 robot.
 
+## In action
+
+The shipped SSD-MobileNetV2 Limelight 3A model, tested in the real world
+(footage by Javi Nashat, Lazer Robotics 23286):
+
+![Limelight 3A SSD in action](demo/ssd_in_action.gif)
+
 ## What ships where
 
 | Destination | Artifact | Path |

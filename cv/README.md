@@ -15,6 +15,16 @@ tracks agree on where the balls are.
 > Real‑world FPS on a Control Hub (1280×720, EasyOpenCV) has not been
 > measured; expect lower.
 
+## In action
+
+The on-hub HSV pipeline over the same kickoff-video frame — the normal
+best-candidate output, then the full set of gated candidates the picker
+chooses from:
+
+![Best candidate](demo/control_hub_cv_sample_1_best.jpg)
+
+![All gated candidates](demo/control_hub_cv_sample_2_all.jpg)
+
 ## What's here
 
 | Path | What it is |
