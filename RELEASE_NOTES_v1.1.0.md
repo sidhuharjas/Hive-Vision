@@ -36,7 +36,7 @@ arena and robot testing — thank you for the field reports.
 SDD v1.1.0 on the Fixed Up field scene — all three game elements detected,
 nothing else flagged:
 
-![SSD v1.1.0 on the Fixed Up scene](demo/samples/ssd_sample_fixed_up_c0.25.jpg)
+![SSD v1.1.0 on the Fixed Up scene](https://github.com/sidhuharjas/Hive-Vision/releases/download/v1.1.0/ssd_sample_fixed_up_c0.25.jpg)
 
 ## Tooling
 
