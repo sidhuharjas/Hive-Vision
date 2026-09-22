@@ -25,6 +25,12 @@ and harder dataset, fixing two classes of false positives found in the field.
 - Class order unchanged: `yellow_pollen`, `red_nectar`, `blue_nectar`
   (`yolo/weights/labels.txt`).
 
+## Credit
+
+The shadow and outside-object false positives addressed in this release were
+reported by **Team 16765 ProBotiX** (probotixbladel@gmail.com) from their
+arena and robot testing — thank you for the field reports.
+
 ## Tooling
 
 - `detect_video_ssd_realtime.py` now runs the SSD alone — the YOLO/CV ground
