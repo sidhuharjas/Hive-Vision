@@ -71,8 +71,9 @@ coprocessor); it never goes on a Limelight.
 
 ## Model details
 
-Two deployed Limelight models were trained on approximately 7,000 labeled
-images combining synthetic renders and real footage:
+Two deployed Limelight models were trained on synthetic renders plus real
+footage — the SSD retrain now uses a corpus of roughly 10,000 labeled images
+(the SSD training set alone is ~9,480 images, up from ~7,000):
 
 - **YOLOv8n** (`yolo/weights/best.pt` / `best.onnx`) — the ONNX/reference
   model, running on a PC / ONNX Runtime host (Jetson, dev laptop) rather than
@@ -80,14 +81,16 @@ images combining synthetic renders and real footage:
   were tuned against (this repo's "other YOLO").
 - **SSD-MobileNetV2** (`best_limelight3a_ssd_mobilenetv2_300x300.tflite`) —
   the model **in place instead of YOLO** on the Limelight 3A neural detector,
-  retrained from the same corpus for the 3A's required full-INT8
-  `TFLite_Detection_PostProcess` contract (details in
-  [`yolo/README.md`](yolo/README.md)).
+  retrained for the 3A's required full-INT8 `TFLite_Detection_PostProcess`
+  contract (details in [`yolo/README.md`](yolo/README.md)). The shipped
+  version (v1.1.0) was retrained with shadow-hardening data and hard negatives
+  (wiring, robot chassis, field signage) so shadows and off-field objects are
+  no longer reported as game elements.
 
 The dataset includes yellow, red, and blue balls, plus difficult examples
-involving blur, occlusion, distance, field lighting, and robot-colored
-distractions. Evaluation results were measured on separate footage from the
-training images.
+involving blur, occlusion, distance, field lighting, shadows, and
+robot-colored distractions. Evaluation results were measured on separate
+footage from the training images.
 
 ## PC tools
 
