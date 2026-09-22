@@ -6,6 +6,7 @@ and difficult examples become available. Updates may include refreshed
 SSD-MobileNetV2 / YOLO weights, improved OpenCV HSV or Lab settings, new
 evaluation results, and new demo samples.
 
+- [v1.1.0 release notes](RELEASE_NOTES_v1.1.0.md)
 - [v1.0.0 release notes](RELEASE_NOTES_v1.0.0.md)
 
 To contribute training data or share test results, join the
