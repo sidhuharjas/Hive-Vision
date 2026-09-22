@@ -3,28 +3,21 @@
 Real-time viewer for the deployed Limelight 3A detector: runs the
 SSD-MobileNetV2 300x300 TFLite model (TFLite_Detection_PostProcess outputs)
 live over a video file or webcam -- i.e. what the robot's 3A neural detector
-will actually report.
-
-Like lab/tools/detect_video_realtime.py it can overlay the cached YOLOv8n
-ground truth in green, so you can compare the SSD model against the repo's
-reference YOLO frame by frame (the SSD is what ships on the 3A; the YOLOv8n
-is the reference the Lab/HSV tracks were tuned with).
+will actually report. Nothing else runs: no YOLO, no CV/lab overlay.
 
 Usage:
-    py yolo/scripts/detect_video_ssd_realtime.py [--source path/video.mp4]
-                                                 [--weights yolo/weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite]
-                                                 [--conf 0.35]
+py yolo/scripts/detect_video_ssd_realtime.py [--source path/video.mp4]
+                                                  [--weights yolo/weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite]
+                                                  [--conf 0.35]
 
 Keys:
     q / Esc   quit
     p / Space pause
     f         toggle sphere filter (ball-shape/size suppression) on/off
-    t         toggle YOLO-truth overlay (green) on/off
     + / -     adjust the confidence threshold in 0.05 steps
     s         save current frame (name includes the timecode)
 """
 import argparse
-import json
 import os
 import time
 import warnings
@@ -45,13 +38,11 @@ except ImportError:
 
 LABELS = ("yellow_pollen", "red_nectar", "blue_nectar")
 COLORS = ((0, 255, 255), (0, 0, 255), (255, 0, 0))
-TRUTH_BGR = (0, 200, 0)
 CONF_STEP = 0.05
 
 SCRIPTS = Path(__file__).resolve().parent
 YOLO_DIR = SCRIPTS.parent
 DEFAULT_WEIGHTS = YOLO_DIR / "weights" / "best_limelight3a_ssd_mobilenetv2_300x300.tflite"
-DEFAULT_TRUTH = YOLO_DIR.parent / "lab" / "docs" / "yolo_truth_lab.json"
 DEFAULT_SOURCE = r"D:\ftc-yolo-synth\ftc-yolo-synth\reports\video_shots\testvid_fused_v7f_raw.mp4"
 
 
@@ -135,21 +126,7 @@ def detections(interpreter, slots, frame, conf, sphere_filter):
     return found
 
 
-def load_truth(path):
-    if not Path(path).exists():
-        return None
-    try:
-        t = json.loads(Path(path).read_text())
-    except Exception:
-        return None
-    t = {int(k): v for k, v in t.items()}
-    if t:
-        print(f"loaded {len(t)} truth frames from {path} "
-              f"(drawn green; this is what the reference YOLO saw)")
-    return t
-
-
-def draw_boxes(img, found, truth, idx):
+def draw_boxes(img, found):
     for class_id, score, x1, y1, x2, y2 in found:
         x1 = max(0, min(img.shape[1] - 1, round(x1)))
         y1 = max(0, min(img.shape[0] - 1, round(y1)))
@@ -160,11 +137,6 @@ def draw_boxes(img, found, truth, idx):
         cv2.rectangle(img, (x1, y1), (x2, y2), color, 3)
         cv2.putText(img, label, (x1, max(28, y1 - 8)),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2, cv2.LINE_AA)
-    if truth and idx in truth:
-        for (c, x1, y1, x2, y2) in truth[idx]:
-            x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
-            cv2.rectangle(img, (x1, y1), (x2, y2), TRUTH_BGR, 1, cv2.LINE_AA)
-            cv2.putText(img, c, (x1, y2 + 18), cv2.FONT_HERSHEY_SIMPLEX, 0.55, TRUTH_BGR, 1)
 
 
 def main():
@@ -174,10 +146,7 @@ def main():
     ap.add_argument("--weights", default=str(DEFAULT_WEIGHTS))
     ap.add_argument("--conf", type=float, default=0.35,
                     help="confidence threshold (3A guidance: start at 0.35-0.45)")
-    ap.add_argument("--truth-json", default=str(DEFAULT_TRUTH),
-                    help="YOLO ground-truth JSON to overlay as green boxes (empty = none)")
     ap.add_argument("--no-sphere", action="store_true", help="start with sphere filter off")
-    ap.add_argument("--no-truth", action="store_true", help="start with truth overlay off")
     ap.add_argument("--scale", type=float, default=0.75,
                     help="display downscale factor (fits big videos on screen)")
     ap.add_argument("--limit", type=int, default=0, help="process at most N frames (smoke test)")
@@ -202,15 +171,13 @@ def main():
     n_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) or -1
     vfps = cap.get(cv2.CAP_PROP_FPS) or 30.0
 
-    truth = load_truth(a.truth_json)
     sphere = not a.no_sphere
-    show_truth = not a.no_truth
     conf = a.conf
     paused = False
     t0 = time.perf_counter()
     n = 0
     name = Path(a.weights).name
-    window = f"SSD-MobileNetV2 3A [{name}]  q=quit p=pause f=sphere t=truth +/-=conf s=save"
+    window = f"SSD-MobileNetV2 3A [{name}]  q=quit p=pause f=sphere +/-=conf s=save"
     cv2.namedWindow(window, cv2.WINDOW_NORMAL)
 
     while True:
@@ -222,8 +189,6 @@ def main():
                 paused = False
             elif key == ord('f'):
                 sphere = not sphere
-            elif key == ord('t'):
-                show_truth = not show_truth
             elif key in (ord('+'), ord('=')):
                 conf = min(1.0, conf + CONF_STEP)
             elif key == ord('-'):
@@ -236,7 +201,7 @@ def main():
 
         found = detections(interpreter, slots, frame, conf, sphere)
         ann = frame.copy()
-        draw_boxes(ann, found, truth if show_truth else None, n + 1)
+        draw_boxes(ann, found)
 
         n += 1
         fps = n / (time.perf_counter() - t0)
@@ -251,8 +216,7 @@ def main():
               f"y={counts['yellow']} r={counts['red']} b={counts['blue']}  {fps:.1f}fps"
         cv2.putText(disp, hud, (12, 34), cv2.FONT_HERSHEY_SIMPLEX, 0.8,
                     (0, 255, 255), 2, cv2.LINE_AA)
-        cv2.putText(disp, f"conf={conf:.2f}  sphere={'ON' if sphere else 'off'}  "
-                          f"truth={'ON' if show_truth else 'off'}",
+        cv2.putText(disp, f"conf={conf:.2f}  sphere={'ON' if sphere else 'off'}",
                     (12, 76), cv2.FONT_HERSHEY_SIMPLEX, 0.7,
                     (0, 255, 255), 2, cv2.LINE_AA)
         cv2.imshow(window, disp)
@@ -264,8 +228,6 @@ def main():
             paused = True
         if key == ord('f'):
             sphere = not sphere
-        if key == ord('t'):
-            show_truth = not show_truth
         if key in (ord('+'), ord('=')):
             conf = min(1.0, conf + CONF_STEP)
         if key == ord('-'):
