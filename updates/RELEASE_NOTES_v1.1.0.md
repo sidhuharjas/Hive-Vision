@@ -25,6 +25,13 @@ and harder dataset, fixing two classes of false positives found in the field.
 - Class order unchanged: `yellow_pollen`, `red_nectar`, `blue_nectar`
   (`yolo/weights/labels.txt`).
 
+## Fix in action
+
+SDD v1.1.0 on the Fixed Up field scene — all three game elements detected,
+nothing else flagged:
+
+![SSD v1.1.0 on the Fixed Up scene](ssd_sample_fixed_up_c0.25.jpg)
+
 ## Credit
 
 The shadow and outside-object false positives addressed in this release were

@@ -31,6 +31,13 @@ The shadow and outside-object false positives addressed in this release were
 reported by **Team 16765 ProBotiX** (probotixbladel@gmail.com) from their
 arena and robot testing — thank you for the field reports.
 
+## Fix in action
+
+SDD v1.1.0 on the Fixed Up field scene — all three game elements detected,
+nothing else flagged:
+
+![SSD v1.1.0 on the Fixed Up scene](demo/samples/ssd_sample_fixed_up_c0.25.jpg)
+
 ## Tooling
 
 - `detect_video_ssd_realtime.py` now runs the SSD alone — the YOLO/CV ground
