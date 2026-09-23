@@ -10,8 +10,8 @@ is found and tracked with three deployment options:
 
 | Track | Where it runs | Cost | Artifacts |
 |-------|---------------|------|-----------|
-| **Limelight 3A (TFLite)** | on the Limelight 3A connected to the robot | **SSD-MobileNetV2** (300×300, uint8-in / float-out `.tflite`) — the model now in place instead of YOLO | [`yolo/weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite`](yolo/README.md) + [`labels.txt`](yolo/weights/labels.txt) |
-| **PC / ONNX Runtime (YOLO)** | dev laptop, Jetson, or another ONNX Runtime coprocessor — **not a Limelight** (Limelight neural detectors accept `.tflite`/`.hef` only, never ONNX) | YOLOv8n reference model | [`yolo/weights/best.onnx`](yolo/README.md) (+ `.pt` source) |
+| **Limelight 3A (TFLite)** | on the Limelight 3A connected to the robot | **SSD-MobileNetV2** (300×300, uint8-in / float-out `.tflite`) — the model now in place instead of YOLO | [`neural-net/weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite`](neural-net/README.md) + [`labels.txt`](neural-net/weights/labels.txt) |
+| **PC / ONNX Runtime (YOLO)** | dev laptop, Jetson, or another ONNX Runtime coprocessor — **not a Limelight** (Limelight neural detectors accept `.tflite`/`.hef` only, never ONNX) | YOLOv8n reference model | [`neural-net/weights/best.onnx`](neural-net/README.md) (+ `.pt` source) |
 | **Control Hub (OpenCV)** | on the robot Control Hub itself | none — pure OpenCV, no model | [`TeamCode/BallDetectorPipeline.java`](cv/README.md) |
 | **Control Hub (Lab)** | on the robot Control Hub itself | one Lab conversion, no model | [`TeamCode/LabBallDetectorPipeline.java`](lab/README.md) |
 
@@ -26,7 +26,7 @@ confirmed across several frames before the robot acts on one.
 
 Note: no Limelight runs ONNX — Limelight neural detectors accept `.tflite` or
 Hailo `.hef` only. The Limelight 3A runs **SSD-MobileNetV2 in place of YOLO**
-(see `yolo/README.md`); the YOLOv8n ONNX lives on a **PC / ONNX Runtime
+(see `neural-net/README.md`); the YOLOv8n ONNX lives on a **PC / ONNX Runtime
 host**. The Control Hub **Lab** track was tuned using this repo's *other*
 YOLO — the YOLOv8n reference model — as its ground truth.
 
@@ -75,14 +75,14 @@ Two deployed Limelight models were trained on synthetic renders plus real
 footage — the SSD retrain now uses a corpus of roughly 10,000 labeled images
 (the SSD training set alone is ~9,480 images, up from ~7,000):
 
-- **YOLOv8n** (`yolo/weights/best.pt` / `best.onnx`) — the ONNX/reference
+- **YOLOv8n** (`neural-net/weights/best.pt` / `best.onnx`) — the ONNX/reference
   model, running on a PC / ONNX Runtime host (Jetson, dev laptop) rather than
   a Limelight, and the ground-truth source the Control Hub Lab and HSV tracks
   were tuned against (this repo's "other YOLO").
 - **SSD-MobileNetV2** (`best_limelight3a_ssd_mobilenetv2_300x300.tflite`) —
   the model **in place instead of YOLO** on the Limelight 3A neural detector,
   retrained for the 3A's required full-INT8 `TFLite_Detection_PostProcess`
-  contract (details in [`yolo/README.md`](yolo/README.md)). The shipped
+  contract (details in [`neural-net/README.md`](neural-net/README.md)). The shipped
   version (v1.1.0) was retrained with shadow-hardening data and hard negatives
   (wiring, robot chassis, field signage) so shadows and off-field objects are
   no longer reported as game elements.
@@ -117,13 +117,13 @@ before incorporating the YOLO artifacts into a closed-source product.
 
 ```bash
 # Real-time viewer (webcam; run from this directory)
-python yolo/scripts/detect_video_realtime.py --weights yolo/weights/best.pt
+python neural-net/scripts/detect_video_realtime.py --weights neural-net/weights/best.pt
 
 # ...or over a video file
-python yolo/scripts/detect_video_realtime.py --weights yolo/weights/best.pt --source path/to/match.mp4
+python neural-net/scripts/detect_video_realtime.py --weights neural-net/weights/best.pt --source path/to/match.mp4
 
 # Export an annotated video with labels
-python yolo/scripts/export_annotated.py --weights yolo/weights/best.pt --source path/to/match.mp4 --out annotated.mp4
+python neural-net/scripts/export_annotated.py --weights neural-net/weights/best.pt --source path/to/match.mp4 --out annotated.mp4
 ```
 
 ### Control Hub track (OpenCV)
@@ -151,9 +151,9 @@ python lab/tools/eval_lab_vs_yolo.py --source path/to/match_raw.mp4 \
 ```
 
 For the Limelight 3A, upload
-**`yolo/weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite`** — the
+**`neural-net/weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite`** — the
 SSD-MobileNetV2 model in place instead of YOLO — with
-[`yolo/weights/labels.txt`](yolo/weights/labels.txt) and class order
+[`neural-net/weights/labels.txt`](neural-net/weights/labels.txt) and class order
 `yellow_pollen`, `red_nectar`, `blue_nectar`. No Limelight accepts ONNX; the
 YOLOv8n `best.onnx` (and the float32/int8 YOLO `.tflite` test artifacts) run
 on a PC / ONNX Runtime host. Read detections through the
@@ -166,7 +166,7 @@ Limelight API used by your FTC integration. For the Control Hub paths, copy
 
 ## Publishing the model for Limelight
 
-`yolo/weights/best.onnx` ships pre-exported for **ONNX Runtime hosts** — a dev
+`neural-net/weights/best.onnx` ships pre-exported for **ONNX Runtime hosts** — a dev
 PC, a Jetson, or another ONNX-capable coprocessor (Limelights are not
 ONNX-capable; their neural detectors take `.tflite`/`.hef` only).
 (YOLOv8n, input 960×960, opset 12, ~12 MB). Its output is the **raw YOLO
@@ -177,11 +177,11 @@ runner, and verify the input size and class names before connecting the
 FTC-side result reader. To re-export with different settings:
 
 ```bash
-python -m ultralytics.export model=yolo/weights/best.pt format=onnx imgsz=960 opset=12
+python -m ultralytics.export model=neural-net/weights/best.pt format=onnx imgsz=960 opset=12
 ```
 
 - `imgsz 960` is the quality setting used for development — tiny far-corner
-  balls are recovered that 640 misses (see `yolo/README.md`).
+  balls are recovered that 640 misses (see `neural-net/README.md`).
 - If your Limelight/coprocessor has an input-size limit, re-export at a
   smaller `imgsz` (e.g. `640`); expect far-corner recall to drop.
 - Always re-export and re-upload after re-tuning on a new field.
@@ -193,7 +193,7 @@ in/out YOLO TFLite exports — the 3A requires a full-INT8 SSD with
 outputs are the SSD post-process tensors (`num`, `scores [1,10]`,
 `class_ids [1,10]`, `boxes [1,10,4]`, normalized), read them through the
 Limelight API used by your FTC integration (see
-[`yolo/README.md`](yolo/README.md)).
+[`neural-net/README.md`](neural-net/README.md)).
 
 ## Performance
 
@@ -207,7 +207,7 @@ Limelight API used by your FTC integration (see
 
 ```
 hive-vision/
-  yolo/                       Limelight track
+  neural-net/              Limelight track (SSD TFLite + YOLO ONNX)
     weights/best.pt           YOLOv8n source checkpoint (6 MB) — reference model; the Lab track's tuning truth
     weights/best.onnx         exported ONNX, ONNX Runtime only (12 MB) — Limelight neural detectors don't run ONNX
     weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite  Limelight 3A model (5 MB, SSD-MobileNetV2 — in place of YOLO)
@@ -226,7 +226,7 @@ hive-vision/
   shipping/                   ready-to-ship handbook (artifacts, comparison, checklist)
   demo/                       short annotated example clips
   logo.png                    project logo
-  LICENSE                     MIT (code) — see THIRD_PARTY_NOTICES.md for yolo/ (AGPL-3.0)
+  LICENSE                     MIT (code) — see THIRD_PARTY_NOTICES.md for neural-net/ (AGPL-3.0)
 ```
 
 ## Shipping

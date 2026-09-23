@@ -72,4 +72,4 @@ Copy the printed values into `LabBallDetectorPipeline.java`'s `YELLOW_LO`, `RED_
 
 ## Ground truth / license notes
 
-`docs/yolo_truth_lab.json` is derived by running the **flagship YOLO model** (`../yolo/weights/best.pt`, Ultralytics, AGPL-3.0 — see [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md)) over development footage; the JSON itself is a list of frame-wise ball boxes and carries no model weights.
+`docs/yolo_truth_lab.json` is derived by running the **flagship YOLO model** (`../neural-net/weights/best.pt`, Ultralytics, AGPL-3.0 — see [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md)) over development footage; the JSON itself is a list of frame-wise ball boxes and carries no model weights.

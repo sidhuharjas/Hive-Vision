@@ -12,7 +12,7 @@ out_*.jpg
 
 # Model/training artifacts you regenerate
 *.pt
-!yolo/weights/best.pt
+!neural-net/weights/best.pt
 runs/
 dataset/
 
@@ -21,9 +21,9 @@ Thumbs.db
 .DS_Store
 
 # Local / regenerable (TFLite export intermediates and outputs)
-yolo/.venv-tflite/
-yolo/_litert_int8/
-yolo/weights/best_saved_model/
-yolo/weights/best.onnx.data
+neural-net/.venv-tflite/
+neural-net/_litert_int8/
+neural-net/weights/best_saved_model/
+neural-net/weights/best.onnx.data
 demo/frames/
 demo/tflite_test_v7f_int8.mp4

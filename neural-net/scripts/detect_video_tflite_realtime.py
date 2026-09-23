@@ -8,7 +8,7 @@ on screen is what the co-processor will produce.
 
 Usage:
     py scripts/detect_video_tflite_realtime.py [--source path/video.mp4]
-                                               [--weights yolo/weights/best_limelight3a_int8.tflite]
+                                               [--weights neural-net/weights/best_limelight3a_int8.tflite]
                                                [--conf 0.25] [--iou 0.45]
 
 Keys:
@@ -29,7 +29,7 @@ try:
 except ImportError:
     from tflite_runtime.interpreter import Interpreter
 
-DEFAULT_W = r"yolo/weights/best_limelight3a_float32.tflite"
+DEFAULT_W = r"neural-net/weights/best_limelight3a_float32.tflite"
 
 LABELS = ("yellow_pollen", "red_nectar", "blue_nectar")
 COLORS = ((0, 255, 255), (0, 0, 255), (255, 0, 0))

@@ -6,8 +6,8 @@ live over a video file or webcam -- i.e. what the robot's 3A neural detector
 will actually report. Nothing else runs: no YOLO, no CV/lab overlay.
 
 Usage:
-py yolo/scripts/detect_video_ssd_realtime.py [--source path/video.mp4]
-                                                  [--weights yolo/weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite]
+py neural-net/scripts/detect_video_ssd_realtime.py [--source path/video.mp4]
+                                                  [--weights neural-net/weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite]
                                                   [--conf 0.35]
 
 Keys:

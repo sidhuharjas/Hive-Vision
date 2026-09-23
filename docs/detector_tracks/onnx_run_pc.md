@@ -23,14 +23,14 @@ pip install -r requirements.txt
 ## Step 2 — Detect live on a webcam
 
 ```bash
-python yolo/scripts/detect_video_realtime.py --weights yolo/weights/best.pt
+python neural-net/scripts/detect_video_realtime.py --weights neural-net/weights/best.pt
 ```
 
 ...or over a video file:
 
 ```bash
-python yolo/scripts/detect_video_realtime.py \
-  --weights yolo/weights/best.pt --source path/to/match.mp4
+python neural-net/scripts/detect_video_realtime.py \
+  --weights neural-net/weights/best.pt --source path/to/match.mp4
 ```
 
 Viewer keys: `q` quit · `p` pause · `f` toggle sphere filter (drops non-ball
@@ -39,14 +39,14 @@ boxes) · `s` save the current frame.
 ## Step 3 — Export an annotated video
 
 ```bash
-python yolo/scripts/export_annotated.py \
-  --weights yolo/weights/best.pt --source path/to/match.mp4 --out annotated.mp4
+python neural-net/scripts/export_annotated.py \
+  --weights neural-net/weights/best.pt --source path/to/match.mp4 --out annotated.mp4
 ```
 
 ## Step 4 — Verify the ONNX artifact on its own
 
 ```bash
-python -c "from ultralytics import YOLO; YOLO('yolo/weights/best.onnx').predict('test.jpg', imgsz=960)"
+python -c "from ultralytics import YOLO; YOLO('neural-net/weights/best.onnx').predict('test.jpg', imgsz=960)"
 ```
 
 ## What to know before you trust it
@@ -67,4 +67,4 @@ python -c "from ultralytics import YOLO; YOLO('yolo/weights/best.onnx').predict(
   the hub detector itself.
 
 Full model details, exports, and TFLite test tooling are in
-[yolo/README.md](https://github.com/sidhuharjas/Hive-Vision/blob/main/yolo/README.md).
+[neural-net/README.md](https://github.com/sidhuharjas/Hive-Vision/blob/main/neural-net/README.md).

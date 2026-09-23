@@ -17,7 +17,7 @@ the Java file.
 
 Usage:
     python fit_lab_from_yolo.py --source path/to/match.mp4
-                                [--weights yolo/weights/best.pt]
+                                [--weights neural-net/weights/best.pt]
                                 [--conf 0.35] [--imgsz 960]
                                 [--band-pct 92.0] [--out lab_tuned.json]
 """
@@ -150,7 +150,7 @@ def main():
                   "truth_frames": len(truth),
                   "boxes_sampled": n_used,
                   "frames_sampled": len(ambient_ls),
-                  "learned_from": "flagship Hive Vision YOLO (yolo/weights/best.pt)",
+                  "learned_from": "flagship Hive Vision YOLO (neural-net/weights/best.pt)",
                   "hue_bands": "360-degree chromaticity hue; sat floors scale by amb/ref_l",
               }}
 

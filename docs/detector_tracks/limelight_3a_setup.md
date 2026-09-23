@@ -13,8 +13,8 @@ exist in this repo — you do not train anything.
 | USB-C to USB-A cable | power + data to the Control Hub |
 | Control Hub with a free USB 3.0 (blue) port | runs your FTC code |
 | Laptop on the robot's Wi-Fi | to open the camera's web UI |
-| `best_limelight3a_ssd_mobilenetv2_300x300.tflite` | the detector model (`yolo/weights/`) |
-| `labels.txt` | the three class names (`yolo/weights/`) |
+| `best_limelight3a_ssd_mobilenetv2_300x300.tflite` | the detector model (`neural-net/weights/`) |
+| `labels.txt` | the three class names (`neural-net/weights/`) |
 
 The 3A has **no neural-network accelerator**. It runs models on its CPU, and
 you must tell the web UI to use the CPU engine — models made for "Coral" or
@@ -56,8 +56,8 @@ In the **Settings** tab:
 1. Pick the pipeline slot you'll use and set **Pipeline Type** to
    **Neural Detector**.
 2. **Upload the model**: choose
-   `yolo/weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite`.
-3. **Upload the labels**: choose `yolo/weights/labels.txt`. The file is one
+   `neural-net/weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite`.
+3. **Upload the labels**: choose `neural-net/weights/labels.txt`. The file is one
    class name per line — keep the order exactly as shipped (`yellow_pollen`,
    `red_nectar`, `blue_nectar`); the model was trained in that order.
 4. Set **Runtime engine** to **CPU**. Leaving it on "Coral" is the most common

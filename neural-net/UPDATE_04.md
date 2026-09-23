@@ -39,5 +39,5 @@ That case is explicitly not this tier's job â€” it's the Limelight SSD's.
 > Keyframe rule: Lab for color, Limelight SSD for shape â€” whenever color
 > can't decide, shape outranks chroma.
 
-See `yolo/README.md` for the artifact table and `UPDATE_03.md` for the SSD
+See `neural-net/README.md` for the artifact table and `UPDATE_03.md` for the SSD
 read-out decode.

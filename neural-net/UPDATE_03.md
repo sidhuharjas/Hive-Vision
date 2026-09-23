@@ -32,7 +32,7 @@ fixes that.
 - Yellow pollen, red nectar, and blue nectar all detected and classified
   correctly.
 
-See `yolo/README.md` for the artifact table.
+See `neural-net/README.md` for the artifact table.
 
 ## Reading the SSD detector output (decode in FTC code)
 

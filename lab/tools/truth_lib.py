@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """YOLO ground-truth generation shared by the Lab track tooling.
 
-Reuses the flagship Hive Vision model (yolo/weights/best.pt) as the label
+Reuses the flagship Hive Vision model (neural-net/weights/best.pt) as the label
 source: every Control Hub metric in this repo is measured against it, so the
 Lab track stays comparable to the CV track.
 """

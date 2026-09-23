@@ -52,7 +52,7 @@
     "truth_frames": 293,
     "boxes_sampled": 400,
     "frames_sampled": 293,
-    "learned_from": "flagship Hive Vision YOLO (yolo/weights/best.pt)",
+    "learned_from": "flagship Hive Vision YOLO (neural-net/weights/best.pt)",
     "hue_bands": "360-degree chromaticity hue; sat floors scale by amb/ref_l",
     "fp_pass": "2026-09: band edges pulled to YOLO-learned core ([22.3,105] yellow, [335,62] red, [258,326] blue); red floor x1.5; green/orange/blue-violet no-ball patches removed"
   }

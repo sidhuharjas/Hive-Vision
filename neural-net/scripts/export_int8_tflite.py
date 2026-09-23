@@ -4,13 +4,13 @@
 Limelight 3A rejects float32 models, so this produces the int8 twin of
 best_limelight3a_float32.tflite. The SavedModel is generated first:
 
-    onnx2tf -i yolo/weights/best.onnx -o yolo/_litert_int8/sm -b 1 -osd -fdosm
+    onnx2tf -i neural-net/weights/best.onnx -o neural-net/_litert_int8/sm -b 1 -osd -fdosm
 
 then this script applies post-training INT8 quantization calibrated on the
 fused training set (V7f/dataset/concat), i.e. exactly the images the model was
 trained on. Use this venv (has tensorflow + onnx2tf):
 
-    hive-vision/yolo/.venv-tflite/Scripts/python.exe yolo/scripts/export_int8_tflite.py
+    hive-vision/neural-net/.venv-tflite/Scripts/python.exe neural-net/scripts/export_int8_tflite.py
 
 Output contract matches the shipped float32 export:
     input   images     (1, 960, 960, 3) float32 (0..1, RGB)

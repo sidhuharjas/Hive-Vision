@@ -8,7 +8,7 @@
  * (L*).
  *
  * How the numbers were learned (see hive-vision/lab/README.md for the
- * full story): the flagship YOLO model (hive-vision/yolo/weights/best.pt)
+ * full story): the flagship YOLO model (hive-vision/neural-net/weights/best.pt)
  * was run over real match footage and every true ball box was sampled.
  * Inside the boxes the chromaticity hue atan2(b*, a*) concentrates in a
  * tight band per color; the sat floor RESPONDS to the frame's ambient L*:

@@ -6,7 +6,7 @@ matches on **CIELAB chromaticity** instead of HSV channels (like the YOLO
 track's color language, minus the network).
 
 - `LabBallDetectorPipeline.java` — drop-in `VisionProcessor`.
-- Constants are **learned from the flagship YOLO model** (`yolo/weights/best.pt`),
+- Constants are **learned from the flagship YOLO model** (`neural-net/weights/best.pt`),
   never hand-picked: the YOLO sees a ball → we sample the pixels it really
   looked at → we store that color's Lab hue band + chroma floor.
 - Result: a shadow cannot change a ball's classification by dragging its HSV

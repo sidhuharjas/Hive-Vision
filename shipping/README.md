@@ -6,15 +6,15 @@ Everything needed to deploy the full three-track stack, gathered in one place. W
 
 | Destination                        | Artifact                                            | Path                                                              |
 | ---------------------------------- | --------------------------------------------------- | ----------------------------------------------------------------- |
-| Limelight 3A                       | SSD-MobileNetV2 300×300 (uint8-in, float out)       | `../yolo/weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite` |
-| Limelight 3A                       | class labels                                        | `../yolo/weights/labels.txt`                                      |
-| PC / ONNX Runtime (Jetson, dev PC) | YOLOv8n ONNX, 960×960 (no Limelight runs ONNX)      | `../yolo/weights/best.onnx`                                       |
-| PC only                            | YOLO float32 TFLite test artifact                   | `../yolo/weights/best_limelight3a_float32.tflite`                 |
-| PC only                            | YOLO int8-weight (DRQ) TFLite test artifact, 3.4 MB | `../yolo/weights/best_limelight3a_int8.tflite`                    |
+| Limelight 3A                       | SSD-MobileNetV2 300×300 (uint8-in, float out)       | `../neural-net/weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite` |
+| Limelight 3A                       | class labels                                        | `../neural-net/weights/labels.txt`                                      |
+| PC / ONNX Runtime (Jetson, dev PC) | YOLOv8n ONNX, 960×960 (no Limelight runs ONNX)      | `../neural-net/weights/best.onnx`                                       |
+| PC only                            | YOLO float32 TFLite test artifact                   | `../neural-net/weights/best_limelight3a_float32.tflite`                 |
+| PC only                            | YOLO int8-weight (DRQ) TFLite test artifact, 3.4 MB | `../neural-net/weights/best_limelight3a_int8.tflite`                    |
 | Control Hub                        | HSV Java pipeline                                   | `../cv/TeamCode/BallDetectorPipeline.java`                        |
 | Control Hub                        | Lab chromaticity Java pipeline                      | `../lab/TeamCode/LabBallDetectorPipeline.java`                    |
 | Control Hub                        | Lab learned config                                  | `../lab/tools/lab_tuned.json`                                     |
-| —                                  | source checkpoint (re-training/re-export)           | `../yolo/weights/best.pt`                                         |
+| —                                  | source checkpoint (re-training/re-export)           | `../neural-net/weights/best.pt`                                         |
 
 Class order is `yellow_pollen`, `red_nectar`, `blue_nectar` — keep `labels.txt` matching on the 3A. The SSD-MobileNetV2 3A model emits **`TFLite_Detection_PostProcess`** outputs (`num`, `scores`, `class_ids`, `boxes`) already decoded — no NMS needed on your side. The ONNX and the YOLO float32/int8 TFLite exports instead emit the **raw YOLO tensor** `output0` (1×7×18900) — \[cx, cy, w, h, scores ×3] in the model grid, pre-NMS — and the device or FTC pipeline must decode and NMS those itself.
 
@@ -54,10 +54,10 @@ Full-INT8 activations are impossible for this architecture: the Detect head's pe
 
 ```bash
 # re-export ONNX from source
-python -m ultralytics.export model=../yolo/weights/best.pt format=onnx imgsz=960 opset=12
+python -m ultralytics.export model=../neural-net/weights/best.pt format=onnx imgsz=960 opset=12
 
 # rebuild the int8-weight TFLite (from the onnx2tf SavedModel; see script header)
-.venv-tflite/Scripts/python.exe ../yolo/scripts/export_int8_tflite.py
+.venv-tflite/Scripts/python.exe ../neural-net/scripts/export_int8_tflite.py
 
 # re-verify int8 vs float32 on real frames
 .venv-tflite/Scripts/python.exe ~/Temp/opencode/verify_int8.py

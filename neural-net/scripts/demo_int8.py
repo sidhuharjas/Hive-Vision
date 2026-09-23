@@ -1,12 +1,20 @@
 #!/usr/bin/env python3
-"""Run the Limelight 3A TFLite model over a video and write an annotated MP4."""
+"""Show the int8 Limelight 3A model working: live window + annotated MP4.
+
+Run (from the repo root):
+    & .venv-tflite\Scripts\python.exe hive-vision\neural-net\scripts\demo_int8.py
+
+Keys: q / ESC quit · p pause · s save current frame (into demo/frames/)
+"""
 import argparse
+import sys
 from pathlib import Path
 
 import cv2
 import numpy as np
 import tensorflow as tf
 
+REPO = Path(__file__).resolve().parents[3]
 LABELS = ("yellow_pollen", "red_nectar", "blue_nectar")
 COLORS = ((0, 255, 255), (0, 0, 255), (255, 0, 0))
 
@@ -87,11 +95,15 @@ def detections(interpreter, frame, input_detail, output_detail, confidence, sphe
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--source", required=True)
-    parser.add_argument("--output", required=True)
-    parser.add_argument("--weights", default="yolo/weights/best_limelight3a_float32.tflite")
+    parser.add_argument("--weights",
+        default=str(REPO / "hive-vision/neural-net/weights/best_limelight3a_int8.tflite"))
+    parser.add_argument("--source",
+        default=str(REPO / "hive-vision/demo/tflite_test_v7f.mp4"))
+    parser.add_argument("--output",
+        default=str(REPO / "hive-vision/demo/tflite_test_v7f_int8.mp4"))
     parser.add_argument("--confidence", type=float, default=0.25)
-    parser.add_argument("--max-frames", type=int, default=0)
+    parser.add_argument("--no-window", action="store_true",
+                        help="skip the live preview, only write the MP4")
     parser.add_argument("--no-sphere", action="store_true",
                         help="keep oversized or non-ball-shaped model boxes")
     args = parser.parse_args()
@@ -100,42 +112,74 @@ def main():
     interpreter.allocate_tensors()
     input_detail = interpreter.get_input_details()[0]
     output_detail = interpreter.get_output_details()[0]
+
     capture = cv2.VideoCapture(args.source)
     if not capture.isOpened():
         raise SystemExit(f"cannot open video: {args.source}")
     width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fps = capture.get(cv2.CAP_PROP_FPS) or 30.0
-    writer = cv2.VideoWriter(args.output, cv2.VideoWriter_fourcc(*"mp4v"), fps, (width, height))
-    Path(args.output).parent.mkdir(parents=True, exist_ok=True)
+    out_path = Path(args.output)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    writer = cv2.VideoWriter(str(out_path), cv2.VideoWriter_fourcc(*"mp4v"), fps,
+                             (width, height))
+    save_dir = out_path.parent / "frames"
+    save_dir.mkdir(parents=True, exist_ok=True)
+    print(f"weights: {args.weights}")
+    print(f"source : {args.source}")
+    print(f"output : {out_path}")
+    print("keys: q/s/t pause  s = save frame  ESC = quit")
 
     frame_number = 0
+    paused = False
+    title = f"int8 {args.weights.rsplit('/', 1)[-1]} | q quit | p pause | s save"
     while True:
-        ok, frame = capture.read()
-        if not ok or (args.max_frames and frame_number >= args.max_frames):
-            break
-        found = detections(interpreter, frame, input_detail, output_detail,
-                   args.confidence, not args.no_sphere)
-        for class_id, score, x1, y1, x2, y2 in found:
-            x1 = max(0, min(width - 1, round(x1)))
-            y1 = max(0, min(height - 1, round(y1)))
-            x2 = max(0, min(width - 1, round(x2)))
-            y2 = max(0, min(height - 1, round(y2)))
-            color = COLORS[class_id]
-            cv2.rectangle(frame, (x1, y1), (x2, y2), color, 3)
-            cv2.putText(frame, f"{LABELS[class_id]} {score:.2f}", (x1, max(28, y1 - 8)),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2, cv2.LINE_AA)
-        cv2.putText(frame, f"TFLite Limelight 3A | frame {frame_number} | detections {len(found)}",
-                    (18, 36), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 255), 2, cv2.LINE_AA)
-        writer.write(frame)
-        frame_number += 1
-        if frame_number % 100 == 0:
-            print(f"processed {frame_number} frames")
+        if not paused:
+            ok, frame = capture.read()
+            if not ok:
+                break
+            boxes = detections(interpreter, frame, input_detail, output_detail,
+                               args.confidence, not args.no_sphere)
+            for class_id, score, x1, y1, x2, y2 in boxes:
+                x1 = max(0, min(width - 1, round(x1)))
+                y1 = max(0, min(height - 1, round(y1)))
+                x2 = max(0, min(width - 1, round(x2)))
+                y2 = max(0, min(height - 1, round(y2)))
+                color = COLORS[class_id]
+                cv2.rectangle(frame, (x1, y1), (x2, y2), color, 3)
+                cv2.putText(frame, f"{LABELS[class_id]} {score:.2f}",
+                            (x1, max(28, y1 - 8)), cv2.FONT_HERSHEY_SIMPLEX,
+                            0.8, color, 2, cv2.LINE_AA)
+            cv2.putText(frame, f"int8 Limelight 3A | frame {frame_number} | dets {len(boxes)}",
+                        (18, 36), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 255), 2,
+                        cv2.LINE_AA)
+            writer.write(frame)
+            frame_number += 1
+            if frame_number % 100 == 0:
+                print(f"processed {frame_number} frames")
+        if not args.no_window:
+            cv2.imshow(title, frame)
+            key = cv2.waitKey(1 if paused else 1) & 0xFF
+            if key in (27, ord("q")):
+                break
+            if key == ord("p"):
+                paused = not paused
+            if key == ord("s"):
+                name = save_dir / f"int8_frame_{frame_number:05d}.jpg"
+                cv2.imwrite(str(name), frame)
+                print(f"saved {name}")
 
     capture.release()
     writer.release()
-    print(f"wrote {args.output} ({frame_number} frames)")
+    if not args.no_window:
+        cv2.destroyAllWindows()
+    print(f"wrote {out_path} ({frame_number} frames)")
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except RuntimeError as exc:
+        if "XNNPACK" in str(exc) or "failed to prepare" in str(exc):
+            sys.exit(f"delegate error (PC only): {exc}")
+        raise

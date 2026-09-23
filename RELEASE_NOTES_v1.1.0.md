@@ -15,7 +15,7 @@ and harder dataset, fixing two classes of false positives found in the field.
 
 ## Model changes
 
-- **Retrained SSD** (`yolo/weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite`)
+- **Retrained SSD** (`neural-net/weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite`)
   now ships as the default Limelight 3A detector.
 - Training dataset grew to **~10,000 labeled images** (9,480 train images
   across synthetic renders, real footage, and hard-negative frames), up from
@@ -23,7 +23,7 @@ and harder dataset, fixing two classes of false positives found in the field.
 - Training run: 20k steps on the Limelight online trainer, final training loss
   0.019, validation loss 0.040 (down from ~0.20 on the previous local run).
 - Class order unchanged: `yellow_pollen`, `red_nectar`, `blue_nectar`
-  (`yolo/weights/labels.txt`).
+  (`neural-net/weights/labels.txt`).
 
 ## Credit
 
@@ -46,8 +46,8 @@ nothing else flagged:
 
 ## Included
 
-- `yolo/weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite` (SSD v2,
+- `neural-net/weights/best_limelight3a_ssd_mobilenetv2_300x300.tflite` (SSD v2,
   uint8-in / float-out, 5.0 MB) + `labels.txt`
-- `yolo/weights/best_limelight3a_float32.tflite` for PC verification
-- `yolo/weights/best.onnx` / `best.pt` PC YOLO reference
+- `neural-net/weights/best_limelight3a_float32.tflite` for PC verification
+- `neural-net/weights/best.onnx` / `best.pt` PC YOLO reference
 - Annotated MP4 demos and looping GIF previews

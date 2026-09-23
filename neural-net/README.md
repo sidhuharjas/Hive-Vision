@@ -22,10 +22,6 @@ Same kickoff-video frame through the model at two confidence thresholds — 0.25
 
 ![YOLO at confidence 0.50](.gitbook/assets/yolo_sample_2_conf50.jpg)
 
-A sample from the TFLite test runner over the same footage:
-
-![TFLite test sample](.gitbook/assets/tflite_test_v7f_sample.jpg)
-
 ## Viewer (PC / dev)
 
 ```bash
@@ -39,7 +35,7 @@ python scripts/detect_video_realtime.py --source path/to/video.mp4
 python scripts/export_annotated.py --source path/to/video.mp4 --out annotated.mp4
 
 # test the Limelight 3A TFLite export over a video
-python yolo/scripts/detect_video_tflite.py \
+python neural-net/scripts/detect_video_tflite.py \
   --source path/to/video.mp4 \
   --output demo/tflite_test.mp4 \
   --confidence 0.35
@@ -64,7 +60,7 @@ python -m ultralytics.export model=weights/best.pt format=onnx imgsz=960 opset=1
 * **imgsz matters.** The dev baseline was measured at `960`; smaller values (e.g. `640`) lose the tiny far-corner balls — acceptable on constrained coprocessors, but measure with this track's own metrics first.
 * Re-export and re-upload `best.onnx` to your ONNX Runtime host after any re-tune (a Limelight will not load it).
 * Limelight 3A users should upload `best_limelight3a_ssd_mobilenetv2_300x300.tflite` with `labels.txt` — the SSD-MobileNetV2 model described above. The YOLO float32/int8 exports below are PC verification artifacts and will not load on the 3A.
-* `best_limelight3a_int8.tflite` is _dynamic-range_ quantization (int8 weights, float activations). Full INT8 activations are not possible: the Detect head's per-stride branches keep separate quantization scales, which TFLite forbids on the `CONCAT` (`concatenation` backend error), and a single mixed box+score tensor would collapse the score rows to zero under the box-dominated scale. The dynamic-range variant keeps the exact float32 contract and matches the float32 model's detections (≤0.02% box delta on the 13-frame verification sweep). Rebuild it with `scripts/export_int8_tflite.py` (requires Python 3.12 + TF in `hive-vision/yolo/.venv-tflite`).
+* `best_limelight3a_int8.tflite` is _dynamic-range_ quantization (int8 weights, float activations). Full INT8 activations are not possible: the Detect head's per-stride branches keep separate quantization scales, which TFLite forbids on the `CONCAT` (`concatenation` backend error), and a single mixed box+score tensor would collapse the score rows to zero under the box-dominated scale. The dynamic-range variant keeps the exact float32 contract and matches the float32 model's detections (≤0.02% box delta on the 13-frame verification sweep). Rebuild it with `scripts/export_int8_tflite.py` (requires Python 3.12 + TF in `hive-vision/neural-net/.venv-tflite`).
 * The two tracks stay in sync through `cv/tools/fit_hsv_from_yolo.py`, which mines the Control Hub HSV ranges straight from this model's detections.
 
 ## Accuracy context
