@@ -1,37 +1,7 @@
 /*
  * BallChaseFollower - hybrid ball collection for AUTO: Pedro plans the
- * approach, the camera finishes. Shares the exact same perception core
- * (BallTracker: allowed classes + target lock) as the no-odometry
- * BallChaseController, so behavior between the two drivers is consistent.
- *
- *   SCAN    Stop and settle, then average a few Limelight frames taken after the
- *           stop, projecting each detection (tx, ty) to a FIELD position via the
- *           Pedro pose. Balls already in memory that are out of view stay; balls
- *           that should be visible but aren't get dropped.
- *   TRAVEL  Pedro drives to APPROACH_DIST short of the nearest remembered ball,
- *           facing it.
- *   TURN    In-place turn to face a close ball, or sweep when nothing is known.
- *   CHASE   Camera-only final approach (aim on tx, range from ty) - no field
- *           position needed, so localization error stops mattering. Coasts
- *           straight if the ball disappears right at the intake.
- *   PICKUP  Stop, run the intake, clear that ball from memory, back to SCAN.
- *   DONE    when pickups reach maxPickups or the time budget runs out.
- *
- * AUTO usage:
- *     follower.update();                                   // YOU own this - we never call it
- *     BallChaseFollower hunt = new BallChaseFollower(follower, tracker, intake);
- *     hunt.setMaxPickups(3); hunt.setTimeBudgetSec(20);
- *     hunt.start();
- *     while (opModeIsActive() && !hunt.isDone()) {
- *         follower.update();
- *         hunt.update();
- *         hunt.addTelemetry(telemetry);
- *     }
- *     hunt.abort();
- *
- * Conventions: Pedro field inches, heading radians CCW+, robot frame +X forward
- * / +Y left. Limelight tx is + to the RIGHT, ty is + UP. Assumes Pedro Pathing
- * 2.x - check for your version.
+ * approach, the camera finishes (SCAN/TRAVEL/TURN/CHASE/PICKUP/DONE).
+ * Class docs moved to MODULES.md (#ballchasefollower).
  */
 package org.firstinspires.ftc.teamcode;
 

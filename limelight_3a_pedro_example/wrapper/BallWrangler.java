@@ -1,47 +1,8 @@
 /*
- * BallWrangler - fluent verb API for ball collecting, drivetrain-agnostic.
- * Subclasses (PedroWrangler, MecanumWrangler) supply only the physical motion;
- * everything else - perception, deciding, intake, chaining - lives here.
- *
- * An auto reads like prose:
- *
- *     BallHunt hunt = new BallHunt(follower, limelight, intake);
- *
- *     if (hunt.canSee(RED)) hunt.grab(RED).within(6).go(this);
- *     else                  hunt.scan().then(hunt.grabNearest()).go(this);
- *
- *     hunt.grabTwo(RED, BLUE).thenReturnTo(scorePose).go(this);
- *
- * Verb groups
- *   finding (look, don't drive):    canSee / count / findNearest / find /
- *                                   findLeftmost / findRightmost / findBiggest /
- *                                   findBestScore
- *   grabbing (drive + intake):      grabNearest / grab(color) / grab(target) /
- *                                   grabLeftmost / grabRightmost / grabAll /
- *                                   grabUpTo / grabTwo / and
- *   searching:                      scan / scanLeft / scanRight / searchAt /
- *                                   lookFor(color).orGiveUp(sec)
- *   moving around a ball:           approach(target) / alignTo(target) /
- *                                   backOff(inches) / nudge(target)
- *   intake:                         intakeOn / intakeOff / reverse(sec) / isFull
- *   chaining / conditions:          ifSeen(color).grab(color) / orElse / then /
- *                                   thenReturnTo / within / go
- *
- * A verb appends a step to a one-shot schedule. go(LinearOpMode) runs the
- * schedule to completion and owns the loop (for Pedro this includes
- * follower.update()); or pump start()/update()/abort() yourself from your own
- * loop, in which case YOU own the drivetrain's loop hook.
- *
- * Chains are ONE-SHOT: go()/update() leave the steps queued, so calling go()
- * again REPLAYS them. Build a chain, run it, then clear() before scheduling
- * the next one. Each step's timers (timeout, backOff deadline, tracker
- * last-seen) start when the step first ACTUALLY runs, not when it was built.
- *
- * then(other) moves the other wrangler's already-scheduled verbs onto this
- * chain; those steps stay bound to `other`, so their pickups are counted on
- * `other` and a same-wrangler orElse() fallback built against `other` would
- * append to `other`'s (now empty) chain - keep orElse/fallbacks on the
- * receiving wrangler in cross-chain builds.
+ * BallWrangler - fluent verb API for ball collecting, drivetrain-agnostic
+ * (subclasses supply only the motion). Class docs moved to
+ * ../MODULES.md (#wrapperballwrangler) - verb groups, one-shot chains,
+ * cross-chain then(other).
  */
 package org.firstinspires.ftc.teamcode.wrapper;
 

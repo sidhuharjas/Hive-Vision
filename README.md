@@ -164,6 +164,25 @@ Limelight API used by your FTC integration. For the Control Hub paths, copy
 `bestOf(BallColor)` — see [cv/README.md](cv/README.md) and
 [lab/README.md](lab/README.md).
 
+### Limelight 3A FTC integration
+
+Once the model is on the Limelight, [`limelight_3a_pedro_example/`](limelight_3a_pedro_example/README.md)
+is the ready-to-read FTC-side code: a `BallTracker` perception core (confidence
++ staleness gating, a color-bound target lock, field projection), two drivers
+using it — `BallChaseController` (no-odometry teleop/auto state machine) and
+`BallChaseFollower` (Pedro Pathing auto hybrid) — and a fluent `BallWrangler`
+verb API over Pedro or mecanum drivetrains. The one-liner:
+
+```java
+int picked = new BallHunt(follower, limelight, intake)
+        .reds().collect(2).within(20)
+        .go(this);   // blocking: drives, picks 2 red balls, hands control back
+```
+
+It compiles against FTC SDK 11.x + Pedro Pathing 2.x with a laptop self-test
+(`\.compile_check.cmd -runwrapper`). Full class reference and tuning table:
+[`limelight_3a_pedro_example/MODULES.md`](limelight_3a_pedro_example/MODULES.md).
+
 ## Publishing the model for Limelight
 
 `neural-net/weights/best.onnx` ships pre-exported for **ONNX Runtime hosts** — a dev
@@ -223,6 +242,10 @@ hive-vision/
     TeamCode/                 LabBallDetectorPipeline.java (drop-in processor)
     tools/                    YOLO-learned config, fitter, sweep, tuner, viewer
     docs/                     evaluation report, cached YOLO truth
+  limelight_3a_pedro_example/ FTC-side integration (BallTracker + chase drivers)
+    final/                    ship-ready: BallTracker, BallChaseController/Follower, BallHunt
+    wrapper/                  fluent verb API over Pedro/mecanum drivetrains
+    MODULES.md                class reference; README.md = usage + calibration
   shipping/                   ready-to-ship handbook (artifacts, comparison, checklist)
   demo/                       short annotated example clips
   logo.png                    project logo

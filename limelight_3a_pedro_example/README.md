@@ -10,9 +10,13 @@ FTC SDK **11.x** and **Pedro Pathing 2.x**.
 
 - **`final/`** — the ship-ready code. Copy these four `.java` files straight
   into your `org.firstinspires.ftc.teamcode` package:
+- **`wrapper/`** — the fluent, drivetrain-agnostic verb API (`BallWrangler`
+  + `PedroWrangler` / `MecanumWrangler`); see [MODULES.md](MODULES.md).
 - **`older/`** — superseded/experimental set (BallMath reference, BallHunter,
   the migrated Pedro 2.x demos). Keeping it out of the active code path; see the
   notes there.
+- **[MODULES.md](MODULES.md)** — full class-level reference (state machines,
+  lock semantics, verb API) that used to live in the Java file banners.
 
 ## Using it (teleop)
 

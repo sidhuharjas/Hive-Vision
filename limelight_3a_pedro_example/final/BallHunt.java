@@ -1,36 +1,6 @@
 /*
- * BallHunt - one-liner ball collecting for AUTO.
- *
- * Wraps BallChaseFollower (the Pedro-pathing state machine) behind a tiny,
- * readable API so an autonomous just says what it wants:
- *
- *     BallHunt hunt = new BallHunt(follower, limelight).alliance().collect(2).within(20);
- *     int picked = hunt.go(this);          // blocking: drives, picks 2 alliance balls
- *     // ...then go score the balls...
- *
- *   .reds()       - only red nectar
- *   .blues()      - only blue nectar
- *   .alliance()   - red + blue (default)
- *   .everything() - red + blue + neutral yellow
- *   .collect(n)   - n balls per hunt (default 1). n <= 0 = unlimited.
- *   .within(sec)  - hard time budget before it hands back control (default 15 s)
- *   .go(opMode)   - BLOCKING convenience: runs the hunt (owns follower.update()),
- *                   streams telemetry, aborts cleanly, returns balls picked.
- *
- * Loop-driven alternative (advanced / when you must keep your own loop):
- *
- *     hunt.start();
- *     while (opModeIsActive() && !hunt.isDone()) {
- *         follower.update();   // YOU own follower.update() in this mode
- *         hunt.update();
- *         hunt.addTelemetry(telemetry);
- *         telemetry.update();
- *     }
- *     hunt.abort();
- *
- * The same BallChaseFollower semantics hold: the tracker's allowed-class
- * filter and target lock are in effect, so the robot hunts that color
- * specifically and never flip-flops between two balls.
+ * BallHunt - one-liner ball collecting for AUTO, wrapping BallChaseFollower
+ * behind a fluent API. Class docs moved to MODULES.md (#ballhunt).
  */
 package org.firstinspires.ftc.teamcode;
 

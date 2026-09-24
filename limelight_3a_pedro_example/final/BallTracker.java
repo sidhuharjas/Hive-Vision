@@ -1,41 +1,7 @@
 /*
- * BallTracker - perception core shared by every ball-chase driver (no-odometry
- * and Pedro-pathing variants). It turns raw Limelight 3A neural-detector output
- * into ONE chosen ball per frame, solving the two-ball flip-flop problem with a
- * target lock:
- *
- *   * allowed classes are configurable (alliance colors, with or without the
- *     neutral yellow), picked during init;
- *   * detections are gated on confidence and staleness;
- *   * while locked on a ball we STICK with whichever detection is angularly
- *     closest to where that ball was last frame (within LOCK_GATE_DEG), even if
- *     another ball is now technically nearer - so two visible balls of similar
- *     range don't make the robot oscillate;
- *   * the lock is also COLOR-bound: while a lock is alive only detections of
- *     the locked class may re-adopt it, so grab(RED) never chases a blue ball
- *     that sits nearby. The fallback can still adopt another ball, but only of
- *     the locked color, until the lock fully drops (then any allowed class).
- *   * if the locked ball can't be matched for LOCK_LOST_MS we drop the lock and
- *     fall back to nearest (lowest ty). While the lock is still fresh and the
- *     ball is momentarily missing we return a 'predicted' sighting carrying the
- *     last-known angles, so the driver keeps facing it instead of instantly
- *     re-targeting something else.
- *
-*  Usage:
- *     BallTracker tracker = new BallTracker(limelight);
- *     tracker.setAllowedClasses(pick);   // or add classes one at a time
- *     BallTracker.Sighting s = tracker.update();   // once per loop
- *
- *  Detections come from a DetectionSource (default: the Limelight; a scripted
- *  source can drive this on a laptop for unit tests). Everything here is
- *  camera-relative (tx/ty/groundRange in inches) - field projection lives in
- *  the pathing driver. All tunables are public static so you can hook a config
- *  system (e.g. Bylazar Configurables) or just edit in place.
- *
- * Class order on the 3A model: 0 = yellow_pollen (neutral), 1 = red_nectar,
- * 2 = blue_nectar. CONFIRM this against the Limelight web UI's pipeline label
- * list before trusting it - nothing here is checked against the model at
- * runtime.
+ * BallTracker - perception core shared by every ball-chase driver: raw
+ * Limelight 3A detections become ONE chosen ball per frame via a color-bound
+ * target lock. Class docs moved to MODULES.md (#balltracker).
  */
 package org.firstinspires.ftc.teamcode;
 

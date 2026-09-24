@@ -1,39 +1,7 @@
 /*
  * BallChaseController - no-odometry ball chase, packaged as a reusable tool
- * instead of an OpMode. This is the updated "Greedy" chase lifted into a state
- * machine you can drop into ANY OpMode (teleop or auto) and call every loop:
- *
- *   SEARCHING -> CHASING -> COASTING -> PICKUP -> SEARCHING ... -> DONE
- *
- *   SEARCHING rotate in place (SEARCH_TURN) until the tracker yields a ball,
- *             or until SEARCH_SWEEP_DEG of dead-reckoned rotation with nothing
- *             in view - the auto guard that ends an empty-field hunt cleanly.
- *   CHASING   aim with a P controller on tx, drive forward (P on dist) only
- *             once roughly aimed at the target. Target choice is delegated to
- *             BallTracker, so the target lock / alliance filter are shared with
- *             the pathing variant.
- *   COASTING  the locked ball vanished at close range (it went under/behind the
- *             intake): keep driving straight for COAST_MS instead of spinning
- *             away as long as it was lost close (lastSeenDist <= COAST_MAX_DIST).
- *   PICKUP    stop, run the intake for PICKUP_DWELL_MS, then count the pickup.
- *   DONE      when pickups reach maxPickups (or update() is never started).
- *
- * Auto usage:
- *     BallChaseController chase = new BallChaseController(tracker, lf, rf, lb, rb, intake);
- *     chase.setMaxPickups(2);              // optional: end after 2 pickups
- *     chase.start();
- *     while (opModeIsActive() && !chase.isDone()) {
- *         chase.update();
- *         chase.addTelemetry(telemetry);
- *     }
- *     chase.abort();                        // hands motors back at zero
- *
- * Conventions: fwd + = forward, strafe + = RIGHT, turn + = CLOCKWISE.
- * Limelight tx is + when the target is to the RIGHT, so turn = +tx * gain.
- * Motor directions (standard symmetric mecanum): LF F, LB F, RF R, RB R -
- * apply with configureMecanumDirections() unless your drivetrain is flipped.
- * All tunables are public static so a config system (e.g. Bylazar
- * Configurables) or plain edits can drive them.
+ * instead of an OpMode (SEARCHING -> CHASING -> COASTING -> PICKUP -> DONE).
+ * Class docs moved to MODULES.md (#ballchasecontroller).
  */
 package org.firstinspires.ftc.teamcode;
 
