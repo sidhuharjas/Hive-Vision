@@ -8,7 +8,7 @@ picks up balls on its own.
 
 - **Get started** — pick a track, set up the camera, deploy
 - **Updates** — what changed between model/docs releases
-- **[API](api/README.md)** — the `ftc_ball_chase_lib` classes teams wire into
+- **[API](api.md)** — the `ftc_ball_chase_lib` classes teams wire into
   their autonomous: `BallTracker`, the chase drivers, and the fluent wrapper
 
 ## Which detector track?
@@ -29,7 +29,7 @@ Detection alone doesn't score points. The
 into a robot action: `BallTracker` picks one ball per frame, the chase drivers
 (`BallChaseController`, `BallChaseFollower`) drive to it, and the wrapper gives
 your autonomous a one-line, readable collect API. That integration is the
-[**API**](api/README.md) tab of this book.
+[**API**](api.md) tab of this book.
 
 ## In action
 

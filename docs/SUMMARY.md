@@ -12,7 +12,7 @@
   * [Collecting training data](training_data.md)
   * [Deployment checklist](deployment_checklist.md)
 * [Updates](updates.md)
-* [API](api/README.md)
+* [API](api.md)
   * [BallTracker](api/ball_tracker.md)
   * [Chasers](api/chasers.md)
   * [Wrapper verbs](api/wrapper.md)
