@@ -1,5 +1,5 @@
 @echo off
-rem Compile verification for final/ + older/ against FTC SDK 11.2.1 + Pedro 2.1.2.
+rem Compile verification for final/ + wrapper/ against FTC SDK 11.2.1 + Pedro 2.1.2.
 rem Uses the local JDK and Maven-extracted jars previously staged in ftc_compile.
 rem Usage: compile_check.cmd              (compile only)
 rem         compile_check.cmd -runmath    (also run the BallMath Java self-test)
@@ -18,7 +18,6 @@ set OUT=%COMPILE_DIR%\out_final
 if not exist "%OUT%" mkdir "%OUT%"
 
 for /r "%ROOT%final" %%f in (*.java) do set SRC=!SRC! "%%f"
-for /r "%ROOT%older" %%f in (*.java) do set SRC=!SRC! "%%f"
 for /r "%ROOT%wrapper" %%f in (*.java) do set SRC=!SRC! "%%f"
 
 "%JDK%\javac.exe" -cp "%CP%" -d "%OUT%" %SRC%

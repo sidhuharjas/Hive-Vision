@@ -166,8 +166,8 @@ Limelight API used by your FTC integration. For the Control Hub paths, copy
 
 ### Limelight 3A FTC integration
 
-Once the model is on the Limelight, [`limelight_3a_pedro_example/`](limelight_3a_pedro_example/README.md)
-is the ready-to-read FTC-side code: a `BallTracker` perception core (confidence
+Once the model is on the Limelight, [`ftc_ball_chase_lib/`](ftc_ball_chase_lib/README.md)
+is the ready-to-read FTC-side library: a `BallTracker` perception core (confidence
 + staleness gating, a color-bound target lock, field projection), two drivers
 using it — `BallChaseController` (no-odometry teleop/auto state machine) and
 `BallChaseFollower` (Pedro Pathing auto hybrid) — and a fluent `BallWrangler`
@@ -181,7 +181,7 @@ int picked = new BallHunt(follower, limelight, intake)
 
 It compiles against FTC SDK 11.x + Pedro Pathing 2.x with a laptop self-test
 (`\.compile_check.cmd -runwrapper`). Full class reference and tuning table:
-[`limelight_3a_pedro_example/MODULES.md`](limelight_3a_pedro_example/MODULES.md).
+[`ftc_ball_chase_lib/MODULES.md`](ftc_ball_chase_lib/MODULES.md).
 
 ## Publishing the model for Limelight
 
@@ -242,10 +242,10 @@ hive-vision/
     TeamCode/                 LabBallDetectorPipeline.java (drop-in processor)
     tools/                    YOLO-learned config, fitter, sweep, tuner, viewer
     docs/                     evaluation report, cached YOLO truth
-  limelight_3a_pedro_example/ FTC-side integration (BallTracker + chase drivers)
-    final/                    ship-ready: BallTracker, BallChaseController/Follower, BallHunt
-    wrapper/                  fluent verb API over Pedro/mecanum drivetrains
-    MODULES.md                class reference; README.md = usage + calibration
+  ftc_ball_chase_lib/          FTC-side library (BallTracker + chase drivers)
+    final/                     BallTracker, BallChaseController/Follower, BallHunt, BallMath
+    wrapper/                   fluent verb API over Pedro/mecanum drivetrains
+    MODULES.md                 class reference; README.md = usage + calibration
   shipping/                   ready-to-ship handbook (artifacts, comparison, checklist)
   demo/                       short annotated example clips
   logo.png                    project logo

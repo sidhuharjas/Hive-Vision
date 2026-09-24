@@ -12,7 +12,6 @@ Jump to:
 - [`final/BallChaseFollower.java`](#ballchasefollower--pedro-auto-hybrid) — automated collect with Pedro
 - [`final/BallHunt.java`](#ballhunt--one-line-auto-wrapper) — one-line fluent wrapper
 - [`wrapper/BallWrangler.java`](#wrapperballwrangler--fluent-verb-api) — fluent verb API
-- [`older/`](#oldersuperseded) — superseded demos
 
 ---
 
@@ -234,12 +233,3 @@ hunt.grabTwo(RED, BLUE).thenReturnTo(scorePose).go(this);
   (beam break / intake current spike): a chase only counts a pickup — and
   reports success — when the sensor confirms it. Without a sensor, behavior is
   unchanged (optimistic count).
-
----
-
-## `older/` — superseded
-
-`older/` holds the superseded example set, moved out and no longer part of the
-active code path: the BallMath/`math_core`/`simulate` reference, the standalone
-`BallHunter` / `BallChaseOpMode`, and the Pedro 1.x demos. See
-[`older/README.md`](older/README.md) for their tuning notes.

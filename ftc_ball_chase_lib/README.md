@@ -8,13 +8,11 @@ FTC SDK **11.x** and **Pedro Pathing 2.x**.
 
 ## Layout
 
-- **`final/`** — the ship-ready code. Copy these four `.java` files straight
-  into your `org.firstinspires.ftc.teamcode` package:
+- **`final/`** — the ship-ready library. `BallTracker` (perception), the two
+  chase drivers, and `BallHunt`; copy them into your
+  `org.firstinspires.ftc.teamcode` package.
 - **`wrapper/`** — the fluent, drivetrain-agnostic verb API (`BallWrangler`
   + `PedroWrangler` / `MecanumWrangler`); see [MODULES.md](MODULES.md).
-- **`older/`** — superseded/experimental set (BallMath reference, BallHunter,
-  the migrated Pedro 2.x demos). Keeping it out of the active code path; see the
-  notes there.
 - **[MODULES.md](MODULES.md)** — full class-level reference (state machines,
   lock semantics, verb API) that used to live in the Java file banners.
 
@@ -91,13 +89,14 @@ Loop-driven users can instead `start()` / `update()` / `abort()` / `isDone()`.
 
 ## Compile check (structure verification)
 
-The whole tree (`final/` + `wrapper/` + `older/`) is verified to compile with `javac`
+The whole tree (`final/` + `wrapper/`) is verified to compile with `javac`
 against the official jars (FTC SDK 11.2.1 + Pedro Pathing 2.1.2). On this
 dev box the jars and a JDK are staged under `%LOCALAPPDATA%\ftc_compile`, so
 just run:
 
 ```powershell
-.\compile_check.cmd -runmath   # compile everything + run the BallMath self-test
+.\compile_check.cmd -runmath      # compile everything + run the BallMath self-test
+.\compile_check.cmd -runwrapper   # compile everything + run the wrapper logic self-test
 ```
 
 For another machine, pull the Maven Central coordinates into a classpath
@@ -108,17 +107,5 @@ For another machine, pull the Maven Central coordinates into a classpath
 
 ```powershell
 javac -cp "RobotCore.jar;Hardware.jar;core-2.1.2.jar;ftc.jar" -d out `
-  final\*.java older\*.java older\pedroPathing\Constants.java
+  final\*.java wrapper\*.java
 ```
-
-## `older/`
-
-`older/` holds the superseded example set, moved out and no longer part of the
-active code path: the BallMath/math_core/simulate reference (primary-target
-only, `ta` fallback), the standalone `BallHunter` / `BallChaseOpMode`, and the
-Pedro 1.x demos `BallPickupOpMode` / `BallHunterTest`. Those two were migrated
-to the Pedro 2.1.2 API (`pathBuilder()...build()`, `isBusy()`,
-`holdPoint(Pose, boolean)`, `Constants.createFollower()` via `FollowerBuilder`)
-so the archived examples still compile — see `older/README.md` for their tuning
-notes. The placeholder `older/pedroPathing/Constants.java` exists only for
-those demos; the files in `final/` don't use it.
