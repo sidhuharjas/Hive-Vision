@@ -27,3 +27,5 @@ neural-net/weights/best_saved_model/
 neural-net/weights/best.onnx.data
 demo/frames/
 demo/tflite_test_v7f_int8.mp4
+# SSD v1 superseded by v2 - keep out of the repo
+neural-net/weights/best_limelight3a_ssd_mobilenetv2_300x300_v1.tflite
