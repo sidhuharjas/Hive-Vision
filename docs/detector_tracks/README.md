@@ -4,9 +4,9 @@ Measured precision/recall for every track lives in [the repo README](https://git
 
 ## The tracks
 
-* [Limelight 3A (SSD)](limelight_3a_ssd.md) — the on-robot neural track
-* [PC / ONNX Runtime (YOLO)](onnx_pc.md) — the reference model + dev tooling
-* [Control Hub (OpenCV + Lab)](control_hub.md) — model-free color tracks
+* [Limelight 3A (SSD)](limelight_3a_ssd/) — the on-robot neural track
+* [PC / ONNX Runtime (YOLO)](onnx_pc/) — the reference model + dev tooling
+* [Control Hub (OpenCV + Lab)](control_hub/) — model-free color tracks
 
 ## Rules of thumb
 
