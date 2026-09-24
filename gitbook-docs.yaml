@@ -27,3 +27,15 @@ site:
           default: true
           content:
             directory: ./updates
+    - type: section
+      key: section-api
+      title: API
+      path: api
+      children:
+        - type: space
+          key: space-api
+          title: API
+          path: api
+          default: true
+          content:
+            directory: ./api
