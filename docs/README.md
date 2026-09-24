@@ -7,6 +7,7 @@ Hive Vision is a real-time FTC ball-detection suite (`yellow_pollen`, `red_necta
 * [PC / ONNX Runtime (YOLO)](detector_tracks/onnx_pc.md) — [run it on a PC](detector_tracks/onnx_run_pc.md)
 * [Control Hub (OpenCV + Lab)](detector_tracks/control_hub.md) — [HSV setup](detector_tracks/hub_hsv_setup.md) · [Lab setup](detector_tracks/hub_lab_setup.md)
 * [Collecting training data](training_data.md)
+* [API — FTC ball chase library](ftc_api.md) — the `ftc_ball_chase_lib` classes
 * [Deployment checklist](deployment_checklist.md) — what ships where
 
 Classes are always `yellow_pollen`=0, `red_nectar`=1, `blue_nectar`=2.

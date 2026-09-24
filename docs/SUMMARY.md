@@ -10,4 +10,5 @@
     * [Set up the HSV track](detector_tracks/hub_hsv_setup.md)
     * [Set up the Lab track](detector_tracks/hub_lab_setup.md)
 * [Collecting training data](training_data.md)
+* [API — FTC ball chase library](ftc_api.md)
 * [Deployment checklist](deployment_checklist.md)

@@ -1,7 +1,7 @@
 # Limelight 3A ball chase — BallTracker + drivers
 
-Shared perception + drive logic to make a robot pick up Uberbuzz (TCR:
-`yellow_pollen` / `red_nectar` / `blue_nectar`) balls using a Limelight 3A SSD
+Shared perception + drive logic to make a robot pick up BioBuzz's game
+elements (`yellow_pollen` / `red_nectar` / `blue_nectar`) using a Limelight 3A SSD
 neural detector. Everything is camera-relative or field-coordinate; no extra
 helper download needed (the FTC SDK ships `Limelight3A` natively). Works with
 FTC SDK **11.x** and **Pedro Pathing 2.x**.
