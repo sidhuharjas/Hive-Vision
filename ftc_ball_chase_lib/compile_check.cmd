@@ -1,9 +1,11 @@
 @echo off
-rem Compile verification for final/ + wrapper/ against FTC SDK 11.2.1 + Pedro 2.1.2.
+rem Compile verification for final/ + wrapper/ (+ tests/) against FTC SDK 11.2.1 + Pedro 2.1.2.
 rem Uses the local JDK and Maven-extracted jars previously staged in ftc_compile.
 rem Usage: compile_check.cmd              (compile only)
 rem         compile_check.cmd -runmath    (also run the BallMath Java self-test)
 rem         compile_check.cmd -runwrapper (also run the wrapper logic self-test)
+rem         compile_check.cmd -runtests   (also run the all-function/all-driver desktop suite)
+rem         compile_check.cmd -runall     (run every suite: math + wrapper + tests)
 
 setlocal enabledelayedexpansion
 set ROOT=%~dp0
@@ -19,6 +21,7 @@ if not exist "%OUT%" mkdir "%OUT%"
 
 for /r "%ROOT%final" %%f in (*.java) do set SRC=!SRC! "%%f"
 for /r "%ROOT%wrapper" %%f in (*.java) do set SRC=!SRC! "%%f"
+for /r "%ROOT%tests" %%f in (*.java) do set SRC=!SRC! "%%f"
 
 "%JDK%\javac.exe" -cp "%CP%" -d "%OUT%" %SRC%
 if errorlevel 1 (echo COMPILE FAILED & exit /b 1)
@@ -29,5 +32,17 @@ if /i "%~1"=="-runmath" (
 )
 if /i "%~1"=="-runwrapper" (
     "%JDK%\java.exe" -cp "%OUT%;%CP%" org.firstinspires.ftc.teamcode.wrapper.WrapperLogicTest
+)
+if /i "%~1"=="-runtests" (
+    "%JDK%\java.exe" -cp "%OUT%;%CP%" org.firstinspires.ftc.teamcode.tests.AllTests
+)
+if /i "%~1"=="-runall" (
+    "%JDK%\java.exe" -cp "%OUT%" org.firstinspires.ftc.teamcode.BallMath
+    if errorlevel 1 (echo SUITE FAILED: BallMath & exit /b 1)
+    "%JDK%\java.exe" -cp "%OUT%;%CP%" org.firstinspires.ftc.teamcode.wrapper.WrapperLogicTest
+    if errorlevel 1 (echo SUITE FAILED: WrapperLogicTest & exit /b 1)
+    "%JDK%\java.exe" -cp "%OUT%;%CP%" org.firstinspires.ftc.teamcode.tests.AllTests
+    if errorlevel 1 (echo SUITE FAILED: AllTests & exit /b 1)
+    echo ALL SUITES PASSED
 )
 endlocal
